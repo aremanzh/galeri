@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import AppEntry from "./AppEntry";
+import * as SplashScreen from 'expo-splash-screen';
+import { FileProvider } from "./src/context/file";
+import { AuthProvider } from "./src/context/auth";
+import { useFonts } from 'expo-font';
+import { useEffect } from "react";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [loaded, error] = useFonts({
+    PlusJakarta: require('./assets/fonts/PlusJakartaSans-Regular.ttf'),
+    PlusJakartaBold: require('./assets/fonts/PlusJakartaSans-Bold.ttf'),
+    PlusJakartaExtraBold: require('./assets/fonts/PlusJakartaSans-ExtraBold.ttf'),
+    PlusJakartaItalic: require('./assets/fonts/PlusJakartaSans-Italic.ttf'),
+    PlusJakartaLight: require('./assets/fonts/PlusJakartaSans-Light.ttf'),
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  useEffect(() => {
+    if (error) throw error;
+  }, [error]);
+
+  useEffect(() => {
+    async function appReady() {
+      if (loaded) {
+        await SplashScreen.hideAsync();
+      }
+    }
+    appReady();
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
+  return (
+    <AuthProvider>
+      <FileProvider>
+        <AppEntry />
+      </FileProvider>
+    </AuthProvider>
+  )
+}
