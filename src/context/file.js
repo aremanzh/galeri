@@ -1,11 +1,11 @@
 import { useState, useEffect, createContext } from "react";
+import axios from "axios";
 
 const FileContext = createContext();
 
 const FileProvider = ({ children }) => {
   const [photo, setPhoto] = useState({
-    id: null,
-    url: "",
+    photos: []
   });
 
   const [video, setVideo] = useState({
@@ -14,8 +14,7 @@ const FileProvider = ({ children }) => {
   });
 
   const [program, setProgram] = useState({
-    id: null,
-    name: "",
+   albums: []
   });
 
   return (

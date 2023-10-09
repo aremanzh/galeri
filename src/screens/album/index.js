@@ -1,14 +1,34 @@
-import { useState, useContext } from 'react'
-import { View, ScrollView, ActivityIndicator, Pressable, Image, Text } from 'react-native'
+import { useState, useContext, useEffect } from 'react'
+import { View, ScrollView, ActivityIndicator, Text} from 'react-native'
+import axios from 'axios';
 
 import AlbumList from '../../components/AlbumList';
 import { FileContext } from '../../context/file';
 
-const BASE_URI = 'https://source.unsplash.com/random?sig=';
 
 export default function AlbumIndex() {
-  const [photo, setPhoto] = useContext(FileContext);
+  const [program, setProgram] = useContext(FileContext);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    loadPrograms();
+  }, [])
+
+  const loadPrograms = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`/albums`);
+      console.log(data);
+      setProgram(prevProgram => ({
+        ...prevProgram,
+        albums: data
+      }));
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  }
 
   if (loading) {
     return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -17,8 +37,10 @@ export default function AlbumIndex() {
   }
 
   return (
+    // <Text>{JSON.stringify(program.albums, null, 2)}</Text>
+    // <Text>{JSON.stringify(program.albums, null, 2)}</Text>
     <ScrollView showsVerticalScrollIndicator={false}>
-      <AlbumList loading={true} albums={BASE_URI} />
+      <AlbumList loading={true} programs={program.albums} />
     </ScrollView>
   )
 }

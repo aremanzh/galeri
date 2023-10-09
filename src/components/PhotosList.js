@@ -32,17 +32,18 @@ export default function PhotosList({ loading, photos }) {
         onClear={() => clearSearch()}
       />
       <MasonryList showsVerticalScrollIndicator={false}
-        data={[...new Array(50)].map((_, i) => i.toString())}
+        data={photos}
         style={styles.list}
+        keyExtractor={(item, index) => index.toString()} // You may want to use a unique key
         numColumns={2}
-        keyExtractor={(e) => e}
+        loading={loading}
         renderItem={({ item, index }) => (
           <>
             <Image
-              source={{ uri: photos + item + '/367/267' }}
+              source={{ uri: `http://localhost:8000/storage/${item.uri}` }}
               containerStyle={styles.item}
               PlaceholderContent={<ActivityIndicator />}
-              onPress={() => navigation.navigate("Photo.Show", { id: item, source: photos + item })}
+              onPress={() => navigation.navigate("Photo.Show", { id: item.id, source: `http://localhost:8000/storage/${item.uri}` })}
             />
           </>
         )}

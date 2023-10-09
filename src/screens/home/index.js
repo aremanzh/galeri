@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { FileContext } from '../../context/file';
 import logo from "../../../assets/logo.png";
+import axios from 'axios';
 
 // screens
 import AlbumIndex from '../album/index';
@@ -12,13 +13,13 @@ import PhotosList from '../../components/PhotosList';
 
 const Tab = createBottomTabNavigator();
 
-const BASE_URI = 'https://picsum.photos/id/';
 
 const Index = () => {
   const [photo, setPhoto] = useContext(FileContext);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    loadPhotos();
   }, [])
 
   const loadPhotos = async () => {
@@ -28,7 +29,7 @@ const Index = () => {
       console.log(data);
       setPhoto(prevPhotos => ({
         ...prevPhotos,
-        photos: data
+        photos: data, // Update the state with the fetched data
       }));
       setLoading(false);
     } catch (error) {
@@ -44,8 +45,9 @@ const Index = () => {
   }
 
   return (
+    // <Text>{JSON.stringify(photo, null, 2)}</Text>
     <ScrollView showsVerticalScrollIndicator={false}>
-      <PhotosList loading={true} photos={BASE_URI} />
+      <PhotosList loading={true} photos={photo.photos} />
     </ScrollView>
   )
 }

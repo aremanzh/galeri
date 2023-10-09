@@ -7,54 +7,56 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import MasonryList from '@react-native-seoul/masonry-list';
 
-export default function AlbumList({ loading, albums }) {
+export default function AlbumList({ loading, programs }) {
   const navigation = useNavigation();
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const updateSearch = (search) => {
     setSearch(search);
   };
 
   const clearSearch = () => {
-    setSearch(''); // Clear the search value
+    setSearch('');
   };
-
 
   return (
     <>
-      <SearchBar
+       <SearchBar
         placeholder="Type Here..."
         onChangeText={updateSearch}
         value={search}
         searchIcon={() => (<MaterialCommunityIcons name='file-search' size={25} color={"gray"} />)}
         clearIcon={(search) => <MaterialCommunityIcons name='close' size={25} color={"gray"} onPress={() => clearSearch()} />}
         onClear={() => clearSearch()}
-      />
-      <MasonryList showsVerticalScrollIndicator={false}
-        data={[...new Array(50)].map((_, i) => i.toString())}
-        style={styles.list}
-        numColumns={1}
-        keyExtractor={(e) => e}
+        />
+
+      {/* FlatList for rendering the list of programs */}
+      <FlatList
+        data={programs}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <Card>
-            <Card.Title>{item}</Card.Title>
+          <Card key={index}>
+            <Card.Title>{item.name}</Card.Title>
             <Card.Divider />
-            <Card.Image
-              source={{ uri: albums + item + '/367/267' }}
-              containerStyle={styles.item}
-              PlaceholderContent={<ActivityIndicator />}
-              resizeMode='contain'
-              onPress={() => navigation.navigate("Album.Show", { id: item, photos: "" })}
-            />
+            {item.photos && item.photos.length > 0 ? (
+              <Card.Image
+                source={{ uri: `http://localhost:8000/storage/${item.photos[0].uri}` }}
+                containerStyle={styles.item}
+                PlaceholderContent={<ActivityIndicator />}
+                resizeMode="contain"
+                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item.photos })}
+              />
+            ) : (
+              <Text>No photos available</Text>
+            )}
             <Text style={{ marginBottom: 10 }}>
-              The idea with React Native Elements is more about component
-              structure than actual design.
+              The idea with React Native Elements is more about component structure than actual design.
             </Text>
           </Card>
         )}
       />
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

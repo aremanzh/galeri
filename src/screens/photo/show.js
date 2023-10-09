@@ -56,7 +56,7 @@ export default function PhotoShow({ route }) {
       <Card >
         <View ref={imageRef} collapsable={false}>
           <Card.Image id='photo'
-            source={{ uri: photoURL + '/367/267' }}
+            source={{ uri: photoURL }}
             PlaceholderContent={<ActivityIndicator />}
             resizeMode='cover'
             style={{ width: '100%', height: 512 }}

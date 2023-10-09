@@ -11,13 +11,13 @@ const Stack = createNativeStackNavigator();
 export default function AlbumShow({ route }) {
   const navigation = useNavigation();
 
-  const photoID = route.params.id;
-  const albumData = route.params.photos;
+  const albumData = route.params.albums;
 
   return (<>
-    <MasonryList
+  <Text>Album{JSON.stringify(albumData, null, 2)}</Text>
+    {/* <MasonryList
       showsVerticalScrollIndicator={false}
-      data={[...new Array(10)].map((_, i) => i.toString())}
+      data={albumData}
       style={styles.list}
       numColumns={2}
       keyExtractor={(e) => e}
@@ -27,7 +27,7 @@ export default function AlbumShow({ route }) {
           <Pressable onPress={() => alert(item)}>
             <Card>
               <Card.Image id='photo'
-                source={{ uri: "" }}
+                source={{ uri: albumData. }}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode='contain'
                 style={{ width: '100%', height: 200 }}
@@ -49,7 +49,7 @@ export default function AlbumShow({ route }) {
           </Pressable>
         </>
       )}
-    />
+    /> */}
   </>
 
     // <ScrollView showsVerticalScrollIndicator={false}>
