@@ -3,6 +3,8 @@ import { Text, View, ScrollView, ActivityIndicator, Pressable, Image } from 'rea
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { FileContext } from '../../context/file';
+import { AuthContext } from '../../context/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import logo from "../../../assets/logo.png";
 import axios from 'axios';
 
@@ -56,6 +58,20 @@ const Index = () => {
 
 
 export default function HomeIndex({ navigation }) {
+  const [auth, setAuth] = useContext(AuthContext);
+
+  const logout = async () => {
+    try {
+      const { data } = await axios.post(`/logout/${auth?.user?.id}`);
+      console.log(data)
+      setAuth({ user: null, token: "" });
+      await AsyncStorage.removeItem("@auth");
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   function Nav() {
     return (
       <View style={{ marginHorizontal: 20 }}>
@@ -69,7 +85,7 @@ export default function HomeIndex({ navigation }) {
   return (
     <Tab.Navigator screenOptions={{
       headerRight: () => (
-        <MaterialCommunityIcons name={"account"} size={25} color={"black"} style={{ marginHorizontal: 10 }} />
+        <MaterialCommunityIcons name={"account"} size={25} color={"black"} style={{ marginHorizontal: 10 }} onPress={() => logout()}/>
       ),
       headerLeft: () => (
         <Nav />

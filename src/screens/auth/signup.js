@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
-import { View, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Platform } from 'react-native'
 import { AuthContext } from '../../context/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Text, Input, Image, Icon, Button } from '@rneui/themed';
 import { Picker } from '@react-native-picker/picker';
@@ -41,17 +42,18 @@ export default function Signup({ navigation }) {
         staff_bio: "",
       });
 
+      console.log(data);
+      setLoading(false);
+
       if (data.error) {
         alert(data.error);
         setLoading(false);
       } else {
-
         setAuth(data);
         await AsyncStorage.setItem('@auth', JSON.stringify(data));
         // alert("Login successful");
         setLoading(false);
-        navigation.navigate("Home", { user: { id: data.user._id, name: data.user.name } });
-
+        navigation.navigate("Utama", { user: { id: data.user.id, name: data.user.staff_nama } });
       }
     } catch (err) {
       console.log(err);
@@ -67,7 +69,7 @@ export default function Signup({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={logo} style={{ width: 420, height: 100 }} resizeMode="contain" />
+      <Image source={logo} style={Platform.OS !== "web" ? { width: 300, height: 100 } : { width: 420, height: 100 }} resizeMode="contain" />
       <View style={{ width: '80%', marginTop: 20 }}>
         <Input
           label="Nama"
@@ -88,6 +90,17 @@ export default function Signup({ navigation }) {
           autoComplete="off"
           keyboardType="numeric"
           value={id}
+        />
+      </View>
+      <View style={{ width: '80%', marginTop: 20 }}>
+        <Input
+          label="Emel Rasmi"
+          placeholder='emel@jpm.gov.my'
+          errorStyle={{ color: 'red' }}
+          onChangeText={(emel) => setEmel(emel)}
+          autoComplete="email"
+          keyboardType="email-address"
+          value={emel}
         />
       </View>
       <View style={{ width: '80%', marginTop: 20 }}>
@@ -207,7 +220,7 @@ export default function Signup({ navigation }) {
         </Picker>
       </View>
       <View style={{ width: '80%', marginTop: 20, paddingHorizontal: 10 }}>
-        {id && password ? <Button title="Log Masuk" onPress={() => navigation.navigate("Utama")} /> : <Button disabled title="Log Masuk" onPress={() => navigation.navigate("Utama")} />}
+        {id && password ? <Button title="Log Masuk" onPress={() => handleSubmit()} /> : <Button disabled title="Log Masuk" onPress={() => navigation.navigate("Utama")} />}
       </View>
       <Text style={styles.text} onPress={() => navigation.navigate("Signin")}>Sudah berdaftar? Log masuk disini</Text>
     </View>
@@ -216,7 +229,7 @@ export default function Signup({ navigation }) {
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: "Poppins",
+    fontFamily: "PlusJakarta",
     marginLeft: 10,
     marginTop: 20,
     color: "blue"

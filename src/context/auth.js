@@ -14,11 +14,11 @@ const AuthProvider = ({ children }) => {
     loadFromAsyncStorage();
   }, []);
 
-  const API = "http://localhost:8000/api/v1";
+  const API = "http://127.0.0.1:8000/api/v1";
 
   // axios
   axios.defaults.baseURL = API;
-  // axios.defaults.headers.common["Authorization"] = `${auth?.token}`;
+  axios.defaults.headers.common["Authorization"] = `${auth?.token}`;
 
   axios.interceptors.response.use(function (response) {
     return response;

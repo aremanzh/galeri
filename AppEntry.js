@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AuthContext } from './src/context/auth';
 
 import Signin from './src/screens/auth/signin';
 import Signup from './src/screens/auth/signup';
@@ -13,18 +14,22 @@ import AlbumShow from './src/screens/album/show';
 const Stack = createNativeStackNavigator();
 
 const AppEntry = () => {
+  const [auth, setAuth] = useContext(AuthContext);
+
+  const authenticated = auth?.token !== "" && auth?.user !== null;
+
+  console.log(auth);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      {authenticated ? (<>
         <Stack.Screen name='Utama' component={HomeIndex} options={{ headerShown: false }} />
-        <Stack.Screen name='Photo.Show' component={PhotoShow} getId={({ params }) => { params.id, params.source }}
+        <Stack.Screen name='Photo.Show' component={PhotoShow} getId={({ params }) => { params.id, params.source, params.data }}
           options={({ route }) => ({
             title: route.params.id,
             headerShown: true,
             headerBackVisible: true,
-            headerRight: () => (<>
-              <MaterialCommunityIcons name='download' size={25} color={"black"} style={{ marginHorizontal: 10 }} />
-            </>)
           })} />
         {/* <Stack.Screen name='Album.Show' component={AlbumShow} /> */}
         <Stack.Screen name='Album.Show' component={AlbumShow} getId={({ params }) => { params.id, params.photos }}
@@ -33,8 +38,10 @@ const AppEntry = () => {
             headerShown: true,
             headerBackVisible: true
           })} />
+      </>) : (<>
         <Stack.Screen name='Signin' component={Signin} options={{ headerShown: false }} />
         <Stack.Screen name='Signup' component={Signup} options={{ headerShown: false }} />
+      </>)}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -22,7 +22,9 @@
     "dom-to-image": "^2.6.0",
     "dom-to-image-more": "^3.2.0",
     "expo": "~49.0.13",
+    "expo-font": "~11.4.0",
     "expo-media-library": "~15.4.1",
+    "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -31,12 +33,11 @@
     "react-native-screens": "~3.22.0",
     "react-native-vector-icons": "^10.0.0",
     "react-native-view-shot": "3.7.0",
-    "react-native-web": "~0.19.6",
-    "expo-font": "~11.4.0",
-    "expo-splash-screen": "~0.20.5"
+    "react-native-web": "~0.19.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "sharp-cli": "^2.1.0",
     "workbox-background-sync": "^6.1.5",
     "workbox-broadcast-update": "^6.1.5",
     "workbox-cacheable-response": "^6.1.5",

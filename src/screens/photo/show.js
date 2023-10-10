@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { ScrollView, ActivityIndicator, StyleSheet, Platform, View } from 'react-native';
-import { Card, Image, SearchBar, Text } from '@rneui/themed';
+import { Button, Card, Image, SearchBar, Text } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { captureRef } from 'react-native-view-shot';
@@ -8,18 +8,51 @@ import { captureRef } from 'react-native-view-shot';
 import domtoimage from 'dom-to-image';
 import * as MediaLibrary from 'expo-media-library';
 
+import { FileContext } from '../../context/file';
+
 export default function PhotoShow({ route }) {
+  const [program, setProgram] = useContext(FileContext);
   const [status, requestPermission] = MediaLibrary.usePermissions();
-
-  const photoID = route.params.id;
-  const photoURL = route.params.source;
-
+  
   const imageRef = useRef();
-  const [isLoading, setIsLoading] = useState(false);
+  const [photoURL, setPhotoURL] = useState(null);
+  const [photoData, setPhotoData] = useState(null);
+  const [album, setAlbum] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  
   if (status === null) {
     requestPermission();
   }
+  
+  useEffect(() => {
+    // Perform your asynchronous operation here, such as fetching data
+    // For example, using a mock fetch with setTimeout:
+    setTimeout(() => {
+      const photoURL = route.params.source;
+      const photoData = route.params.data;
+      setPhotoURL(photoURL);
+      setPhotoData(photoData);
+      setLoading(false);
+    }, 1000); // Simulate a 1-second delay
+    
+    // If you have any cleanup to perform, return a function from useEffect
+    // For example, if you're setting up a timer, you can clear it here
+    return () => {
+      // Cleanup code here (e.g., clearTimeout)
+      clearTimeout();
+    };
+  }, []);
+  
+  const getProgramInfo = () => {
+    if (!program.albums) {
+      return null; // or return a default value
+    }
+  
+    const album = program.albums.find(album => album.id === photoData.program_id);
+    setAlbum(album);
+    return album || null; // return null if album is not found
+  };
 
   const onSaveImageAsync = async () => {
     if (Platform.OS !== 'web') {
@@ -51,6 +84,12 @@ export default function PhotoShow({ route }) {
     }
   };
 
+  if (loading) {
+    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <ActivityIndicator></ActivityIndicator>
+    </View>
+  }
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Card >
@@ -62,24 +101,19 @@ export default function PhotoShow({ route }) {
             style={{ width: '100%', height: 512 }}
           />
         </View>
-        <Card.Title>Tajuk gambar disini{photoID}</Card.Title>
+        <Card.Title style={styles.text}>{photoData.info}</Card.Title>
         <Card.Divider />
-        <Text style={{ marginBottom: 10 }}>
-          Deskripsi gambar di sini
+        {/* <Text style={styles.text}>
+          Album: {album.name || photoData.program.name}
+        </Text> */}
+        <Text style={styles.text}>
+          Saiz: {photoData.size} kilobytes
         </Text>
-        <Text style={{ marginBottom: 10 }}>
-          Album
-        </Text>
-        <Text style={{ marginBottom: 10 }}>
-          Saiz
-        </Text>
-        <Text style={{ marginBottom: 10 }}>
-          Tarikh muatnaik
+        <Text style={styles.text}>
+          Tarikh: {photoData.created_at}
         </Text>
         <Card.Divider />
-        <Text onPress={onSaveImageAsync} h4 style={{ marginBottom: 10 }}>
-          Muat Turun
-        </Text>
+        <Button title="Muat turun" onPress={onSaveImageAsync} />
       </Card>
     </ScrollView>
   )
@@ -94,4 +128,8 @@ const styles = StyleSheet.create({
     height: 300,
     flex: 1,
   },
+  text: {
+    fontFamily: 'PlusJakartaBold',
+    marginBottom: 10
+  }
 });

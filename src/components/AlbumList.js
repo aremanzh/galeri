@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { FlatList, ScrollView, ActivityIndicator, StyleSheet, Text } from 'react-native';
-import { Card, Image, SearchBar } from '@rneui/themed';
+import { FlatList, ScrollView, ActivityIndicator, StyleSheet, View} from 'react-native';
+import { Card, Image, SearchBar, Text } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
@@ -21,22 +21,30 @@ export default function AlbumList({ loading, programs }) {
 
   return (
     <>
+    <View style={{marginHorizontal: 10,}}>
        <SearchBar
-        placeholder="Type Here..."
+        placeholder="Carian gambar atau program"
         onChangeText={updateSearch}
         value={search}
         searchIcon={() => (<MaterialCommunityIcons name='file-search' size={25} color={"gray"} />)}
         clearIcon={(search) => <MaterialCommunityIcons name='close' size={25} color={"gray"} onPress={() => clearSearch()} />}
         onClear={() => clearSearch()}
+        containerStyle={{ marginTop: 10, backgroundColor: "", borderTopWidth: "0px",borderBottomWidth: "0px"}}
+        style={{borderColor: "", backgroundColor: ""}}
+        inputContainerStyle={{backgroundColor: "white"}}
         />
+        <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
+          <Text style={{marginLeft: 10, fontFamily: "PlusJakartaBold"}} h4>Senarai Program</Text>
+          <MaterialCommunityIcons name='folder-plus' size={25} color={"gray"} style={{marginRight: 10}}/>
+        </View>
+    </View>
 
-      {/* FlatList for rendering the list of programs */}
       <FlatList
         data={programs}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <Card key={index}>
-            <Card.Title>{item.name}</Card.Title>
+            <Card.Title style={{fontFamily: "PlusJakarta"}}>{item.name}</Card.Title>
             <Card.Divider />
             {item.photos && item.photos.length > 0 ? (
               <Card.Image
@@ -44,13 +52,13 @@ export default function AlbumList({ loading, programs }) {
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode="contain"
-                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item.photos })}
+                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item, album: programs })}
               />
             ) : (
               <Text>No photos available</Text>
             )}
             <Text style={{ marginBottom: 10 }}>
-              The idea with React Native Elements is more about component structure than actual design.
+              {item.desc}
             </Text>
           </Card>
         )}

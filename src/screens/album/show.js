@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, ActivityIndicator, StyleSheet, Platform, View, Pressable } from 'react-native';
-import { Card, Image, SearchBar, Text } from '@rneui/themed';
+import { Button, Card, Image, SearchBar, Text } from '@rneui/themed';
 import MasonryList from '@react-native-seoul/masonry-list';
 import PhotosList from '../../components/PhotosList'
 import { useNavigation } from '@react-navigation/native';
@@ -11,81 +11,40 @@ const Stack = createNativeStackNavigator();
 export default function AlbumShow({ route }) {
   const navigation = useNavigation();
 
-  const albumData = route.params.albums;
+  const albumData = route.params.photos;
+  const album = route.params.album;
 
   return (<>
-  <Text>Album{JSON.stringify(albumData, null, 2)}</Text>
-    {/* <MasonryList
+  <Button title="Muat turun" />
+    <MasonryList
       showsVerticalScrollIndicator={false}
-      data={albumData}
+      data={albumData.photos}
       style={styles.list}
       numColumns={2}
-      keyExtractor={(e) => e}
+      keyExtractor={(item, index) => index.toString()} // You may want to use a unique key
       renderItem={({ item, index }) => (
         <>
-          <Card.Divider />
-          <Pressable onPress={() => alert(item)}>
+          <Pressable onPress={() => navigation.navigate("Photo.Show", {id: item.id, source: `http://localhost:8000/storage/${item.uri}`, data: item})}>
             <Card>
               <Card.Image id='photo'
-                source={{ uri: albumData. }}
+                source={{ uri: `http://localhost:8000/storage/${item.uri}` }}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode='contain'
                 style={{ width: '100%', height: 200 }}
               />
-              <Card.Divider />
-              <Text style={{ marginBottom: 10 }}>
-                Deskripsi gambar di sini
-              </Text>
-              <Text style={{ marginBottom: 10 }}>
-                Album
-              </Text>
-              <Text style={{ marginBottom: 10 }}>
-                Saiz
-              </Text>
-              <Text style={{ marginBottom: 10 }}>
-                Tarikh muatnaik
-              </Text>
             </Card>
           </Pressable>
         </>
       )}
-    /> */}
+    />
   </>
-
-    // <ScrollView showsVerticalScrollIndicator={false}>
-    //   <Card.Divider />
-    //   <Card.Title>Album Title</Card.Title>
-    //   {[...new Array(50)].map((_, i) => (
-    //     <Card key={i}>
-    //       <Card.Image id='photo'
-    //         source={{ uri: "" }}
-    //         PlaceholderContent={<ActivityIndicator />}
-    //         resizeMode='contain'
-    //         style={{ width: '100%', height: 512 }}
-    //       />
-    //       <Card.Divider />
-    //       <Text style={{ marginBottom: 10 }}>
-    //         Deskripsi gambar di sini
-    //       </Text>
-    //       <Text style={{ marginBottom: 10 }}>
-    //         Album
-    //       </Text>
-    //       <Text style={{ marginBottom: 10 }}>
-    //         Saiz
-    //       </Text>
-    //       <Text style={{ marginBottom: 10 }}>
-    //         Tarikh muatnaik
-    //       </Text>
-    //     </Card>
-    //   ))}
-    // </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   list: {
     width: '100%',
-    backgroundColor: '#000',
+    backgroundColor: 'white',
   },
   item: {
     aspectRatio: 1,

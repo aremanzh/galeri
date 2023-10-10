@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react'
-import { View, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Platform } from 'react-native'
 import { AuthContext } from '../../context/auth';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Input, Image, Icon, Button } from '@rneui/themed';
 
 import logo from "../../../assets/logo.png";
@@ -18,9 +19,11 @@ export default function Signin({ navigation }) {
     try {
       setLoading(true);
       const { data } = await axios.post("/signin", {
-        id,
-        password,
+        staff_ic: id,
+        password: password,
       });
+      
+      console.log(data);
 
       if (data.error) {
         alert(data.error);
@@ -31,14 +34,14 @@ export default function Signin({ navigation }) {
         await AsyncStorage.setItem('@auth', JSON.stringify(data));
         // alert("Login successful");
         setLoading(false);
-        navigation.navigate("Home", { user: { id: data.user._id, name: data.user.name } });
-
+        navigation.navigate("Utama", { user: { id: data.user.id, name: data.user.staff_nama } });
       }
     } catch (err) {
       console.log(err);
       setLoading(false);
     }
   };
+
 
   if (loading) {
     return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -48,7 +51,7 @@ export default function Signin({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={logo} style={{ width: 420, height: 100 }} resizeMode="contain" />
+      <Image source={logo} style={Platform.OS !== "web" ? { width: 300, height: 100 } : { width: 420, height: 100 }} resizeMode="contain" />
       <View style={{ width: '80%', marginTop: 20 }}>
         {/* <Text h4 h4Style={styles.h4Style} style={styles.text}>Nombor Kad Pengenalan</Text> */}
         <Input
@@ -74,7 +77,7 @@ export default function Signin({ navigation }) {
         />
       </View>
       <View style={{ width: '80%', marginTop: 20 }}>
-        {id && password ? <Button title="Log Masuk" onPress={() => navigation.navigate("Utama")} /> : <Button disabled title="Log Masuk" onPress={() => navigation.navigate("Utama")} />}
+        {id && password ? <Button title="Log Masuk" onPress={() => handleSubmit()} /> : <Button disabled title="Log Masuk" onPress={() => navigation.navigate("Utama")} />}
       </View>
       <Text style={styles.text} onPress={() => navigation.navigate("Signup")}>Belum berdaftar? Daftar disini</Text>
     </View>
