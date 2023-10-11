@@ -40,7 +40,7 @@ export default function AlbumIndex() {
     // <Text>{JSON.stringify(program.albums, null, 2)}</Text>
     // <Text>{JSON.stringify(program.albums, null, 2)}</Text>
     <ScrollView showsVerticalScrollIndicator={false}>
-      <AlbumList loading={true} programs={program.albums} />
+      <AlbumList loading={true} programs={program.albums}/>
     </ScrollView>
   )
 }

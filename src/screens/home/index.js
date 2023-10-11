@@ -49,7 +49,7 @@ const Index = () => {
   return (
     // <Text>{JSON.stringify(photo, null, 2)}</Text>
     <ScrollView showsVerticalScrollIndicator={false}>
-      <PhotosList loading={true} photos={photo.photos} />
+      <PhotosList loading={true} photos={photo.photos} onRefresh={() => loadPhotos()}/>
     </ScrollView>
   )
 }

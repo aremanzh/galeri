@@ -10,6 +10,8 @@ import Signup from './src/screens/auth/signup';
 import HomeIndex from './src/screens/home';
 import PhotoShow from './src/screens/photo/show';
 import AlbumShow from './src/screens/album/show';
+import AlbumCreate from './src/screens/album/create';
+import PhotoCreate from './src/screens/photo/create';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +37,16 @@ const AppEntry = () => {
         <Stack.Screen name='Album.Show' component={AlbumShow} getId={({ params }) => { params.id, params.photos }}
           options={({ route }) => ({
             title: route.params.id,
+            headerShown: true,
+            headerBackVisible: true
+          })} />
+        <Stack.Screen name='Album.Create' component={AlbumCreate} options={({ route }) => ({
+            title: "Tambah Program",
+            headerShown: true,
+            headerBackVisible: true
+          })} />
+        <Stack.Screen name='Photo.Create' component={PhotoCreate} getId={({ params }) => { params.id }} options={({ route }) => ({
+            title: "Tambah Gambar",
             headerShown: true,
             headerBackVisible: true
           })} />

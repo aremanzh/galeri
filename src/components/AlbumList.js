@@ -6,45 +6,69 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import MasonryList from '@react-native-seoul/masonry-list';
+import useSearch from '../hooks/useSearch';
 
 export default function AlbumList({ loading, programs }) {
   const navigation = useNavigation();
 
-  const [search, setSearch] = useState('');
   const updateSearch = (search) => {
-    setSearch(search);
+    setKeyword(search);
   };
 
   const clearSearch = () => {
-    setSearch('');
+    setKeyword(''); // Clear the search value
   };
+
+  const { keyword, setKeyword, filteredProgram } = useSearch(programs);
 
   return (
     <>
-    <View style={{marginHorizontal: 10,}}>
-       <SearchBar
-        placeholder="Carian gambar atau program"
-        onChangeText={updateSearch}
-        value={search}
-        searchIcon={() => (<MaterialCommunityIcons name='file-search' size={25} color={"gray"} />)}
-        clearIcon={(search) => <MaterialCommunityIcons name='close' size={25} color={"gray"} onPress={() => clearSearch()} />}
-        onClear={() => clearSearch()}
-        containerStyle={{ marginTop: 10, backgroundColor: "", borderTopWidth: "0px",borderBottomWidth: "0px"}}
-        style={{borderColor: "", backgroundColor: ""}}
-        inputContainerStyle={{backgroundColor: "white"}}
+    <View style={{ marginHorizontal: 10 }}>
+        <SearchBar
+          placeholder="Carian gambar atau program"
+          onChangeText={updateSearch}
+          value={keyword}
+          searchIcon={() => <MaterialCommunityIcons name='file-search' size={25} color="gray" />}
+          clearIcon={() => (
+            <MaterialCommunityIcons
+              name='close'
+              size={25}
+              color="gray"
+              onPress={clearSearch}
+            />
+          )}
+          onClear={clearSearch}
+          containerStyle={{
+            marginTop: 10,
+            backgroundColor: "transparent",
+            borderTopWidth: 0,
+            borderBottomWidth: 0,
+          }}
+          inputContainerStyle={{
+            backgroundColor: "white",
+            borderColor: "transparent",
+          }}
         />
-        <View style={{flex:1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
-          <Text style={{marginLeft: 10, fontFamily: "PlusJakartaBold"}} h4>Senarai Program</Text>
-          <MaterialCommunityIcons name='folder-plus' size={25} color={"gray"} style={{marginRight: 10}}/>
+        <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <Text style={{ marginLeft: 10, fontFamily: "PlusJakartaBold", fontSize: 20 }}>
+            Semua Program
+          </Text>
+          <MaterialCommunityIcons
+            name='file-plus'
+            size={25}
+            color="gray"
+            style={{ marginRight: 10 }}
+            onPress={() => navigation.navigate("Album.Create")}
+          />
         </View>
-    </View>
+      </View>
 
       <FlatList
-        data={programs}
+        data={filteredProgram}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <Card key={index}>
-            <Card.Title style={{fontFamily: "PlusJakarta"}}>{item.name}</Card.Title>
+            <Card.Title style={{fontFamily: "PlusJakartaBold"}}>{item.name}</Card.Title>
             <Card.Divider />
             {item.photos && item.photos.length > 0 ? (
               <Card.Image
@@ -55,9 +79,16 @@ export default function AlbumList({ loading, programs }) {
                 onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item, album: programs })}
               />
             ) : (
-              <Text>No photos available</Text>
+              <Card.Image
+                source={{ uri: `http://localhost:8000/images/blank.png` }}
+                containerStyle={styles.item}
+                PlaceholderContent={<ActivityIndicator />}
+                resizeMode="contain"
+                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item, album: programs })}
+              />
+              // <Text style={styles.text && {textAlign: "center"}}>No photos available</Text>
             )}
-            <Text style={{ marginBottom: 10 }}>
+            <Text style={styles.text}>
               {item.desc}
             </Text>
           </Card>
@@ -75,4 +106,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  text: {
+    marginBottom: 10,
+    fontFamily: "PlusJakarta"
+  }
 });
