@@ -21,6 +21,8 @@ export default function AlbumList({ loading, programs }) {
 
   const { keyword, setKeyword, filteredProgram } = useSearch(programs);
 
+  const API = "http://10.20.185.84:8000";
+
   return (
     <>
     <View style={{ marginHorizontal: 10 }}>
@@ -72,7 +74,7 @@ export default function AlbumList({ loading, programs }) {
             <Card.Divider />
             {item.photos && item.photos.length > 0 ? (
               <Card.Image
-                source={{ uri: `http://localhost:8000/storage/${item.photos[0].uri}` }}
+                source={{ uri: `${API}/storage/${item.photos[0].uri}` }}
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode="contain"
@@ -80,7 +82,7 @@ export default function AlbumList({ loading, programs }) {
               />
             ) : (
               <Card.Image
-                source={{ uri: `http://localhost:8000/images/blank.png` }}
+                source={{ uri: `${API}/images/blank.png` }}
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode="contain"

@@ -23,7 +23,7 @@ export default function PhotosList({ loading, photos, onRefresh }) {
 
   const { keyword, setKeyword, filteredData } = useSearch(photos);
 
-  const API = Platform.OS == "android" ? `http://10.0.2.2:8000/storage/` : `http://localhost:8000/storage/`;
+  const API = `http://10.20.185.84:8000/storage/`;
 
 
   return (

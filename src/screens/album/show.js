@@ -34,6 +34,7 @@ export default function AlbumShow({ route }) {
   };
 
   // const { keyword, setKeyword, filteredData } = useSearch(albumData);
+  const API = "http://10.85.146.142:8000";
 
   const filterResult = albumData?.photos?.filter(
     (photo) => photo.info && photo.info.toLowerCase().includes(keyword)
@@ -118,7 +119,7 @@ export default function AlbumShow({ route }) {
                   onPress={() =>
                     navigation.navigate("Photo.Show", {
                       id: item.id,
-                      source: `http://localhost:8000/storage/${item.uri}`,
+                      source: `${API}/storage/${item.uri}`,
                       data: item,
                     })
                   }
@@ -127,7 +128,7 @@ export default function AlbumShow({ route }) {
                     <Card.Image
                       id="photo"
                       source={{
-                        uri: `http://localhost:8000/storage/${item.uri}`,
+                        uri: `${API}/storage/${item.uri}`,
                       }}
                       PlaceholderContent={<ActivityIndicator />}
                       resizeMode="contain"

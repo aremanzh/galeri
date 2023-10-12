@@ -76,7 +76,7 @@ export default function HomeIndex({ navigation }) {
     return (
       <View style={{ marginHorizontal: 20 }}>
         <Pressable onPress={() => navigation.navigate("Home")}>
-          <Image source={logo} style={{ width: 350, height: 100 }} resizeMode={'contain'} />
+          <Image source={logo} style={{ width: 350, height: 80 }} resizeMode={'contain'} />
         </Pressable>
       </View>
     )
@@ -84,11 +84,11 @@ export default function HomeIndex({ navigation }) {
 
   return (
     <Tab.Navigator screenOptions={{
-      headerRight: () => (
-        <MaterialCommunityIcons name={"account"} size={25} color={"black"} style={{ marginHorizontal: 10 }} onPress={() => logout()}/>
-      ),
-      headerLeft: () => (
-        <Nav />
+      header: () => (
+        <View style={{flexDirection: "row", justifyContent:"space-between", alignItems: "center", backgroundColor: "white"}}>
+          <Nav />
+          <MaterialCommunityIcons name={"account"} size={25} color={"black"} style={{ marginHorizontal: 10 }} onPress={() => logout()}/>
+        </View>
       )
     }}>
       <Tab.Screen name="Home" component={Index} options={{
