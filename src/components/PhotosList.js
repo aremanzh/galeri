@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import MasonryList from '@react-native-seoul/masonry-list';
 import useSearch from '../hooks/useSearch';
+import { api } from '../config/api';
 
 export default function PhotosList({ loading, photos, onRefresh }) {
 
@@ -23,7 +24,7 @@ export default function PhotosList({ loading, photos, onRefresh }) {
 
   const { keyword, setKeyword, filteredData } = useSearch(photos);
 
-  const API = `http://10.20.185.84:8000/storage/`;
+  const API = `${api}/storage/`;
 
 
   return (

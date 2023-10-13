@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
 import MasonryList from '@react-native-seoul/masonry-list';
 import useSearch from '../hooks/useSearch';
+import { api } from '../config/api';
 
 export default function AlbumList({ loading, programs }) {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ export default function AlbumList({ loading, programs }) {
 
   const { keyword, setKeyword, filteredProgram } = useSearch(programs);
 
-  const API = "http://10.20.185.84:8000";
+  // const API = "http://10.20.185.84:8000";
 
   return (
     <>
@@ -74,7 +75,7 @@ export default function AlbumList({ loading, programs }) {
             <Card.Divider />
             {item.photos && item.photos.length > 0 ? (
               <Card.Image
-                source={{ uri: `${API}/storage/${item.photos[0].uri}` }}
+                source={{ uri: `${api}/storage/${item.photos[0].uri}` }}
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode="contain"
@@ -82,7 +83,7 @@ export default function AlbumList({ loading, programs }) {
               />
             ) : (
               <Card.Image
-                source={{ uri: `${API}/images/blank.png` }}
+                source={{ uri: `${api}/images/blank.png` }}
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode="contain"

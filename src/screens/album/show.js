@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import useSearch from "../../hooks/useSearch";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { api } from "../../config/api";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +35,7 @@ export default function AlbumShow({ route }) {
   };
 
   // const { keyword, setKeyword, filteredData } = useSearch(albumData);
-  const API = "http://10.85.146.142:8000";
+  // const API = "http://10.85.146.142:8000";
 
   const filterResult = albumData?.photos?.filter(
     (photo) => photo.info && photo.info.toLowerCase().includes(keyword)
@@ -119,7 +120,7 @@ export default function AlbumShow({ route }) {
                   onPress={() =>
                     navigation.navigate("Photo.Show", {
                       id: item.id,
-                      source: `${API}/storage/${item.uri}`,
+                      source: `${api}/storage/${item.uri}`,
                       data: item,
                     })
                   }
@@ -128,7 +129,7 @@ export default function AlbumShow({ route }) {
                     <Card.Image
                       id="photo"
                       source={{
-                        uri: `${API}/storage/${item.uri}`,
+                        uri: `${api}/storage/${item.uri}`,
                       }}
                       PlaceholderContent={<ActivityIndicator />}
                       resizeMode="contain"

@@ -43,16 +43,6 @@ export default function PhotoShow({ route }) {
       clearTimeout();
     };
   }, []);
-  
-  const getProgramInfo = () => {
-    if (!program.albums) {
-      return null; // or return a default value
-    }
-  
-    const album = program.albums.find(album => album.id === photoData.program_id);
-    setAlbum(album);
-    return album || null; // return null if album is not found
-  };
 
   const onSaveImageAsync = async () => {
     if (Platform.OS !== 'web') {
@@ -70,14 +60,10 @@ export default function PhotoShow({ route }) {
       }
     } else {
       try {
-        const dataUrl = await domtoimage.toJpeg(imageRef.current, {
-          quality: 1,
-        });
+        const dataUrl = await domtoimage.toJpeg(imageRef.current);
 
-        let link = document.createElement('a');
-        link.download = `${photoURL}-${Date.now()}.jpeg`;
-        link.href = dataUrl;
-        link.click();
+          console.log(dataUrl);
+
       } catch (e) {
         console.log('Error (web):', e); // Log web-specific errors for debugging
       }
@@ -92,14 +78,15 @@ export default function PhotoShow({ route }) {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Card >
+      <Card>
         <View ref={imageRef} collapsable={false}>
-          <Card.Image id='photo'
+          {/* <Card.Image id="photo"
             source={{ uri: photoURL }}
             PlaceholderContent={<ActivityIndicator />}
             resizeMode='cover'
             style={{ width: '100%', height: 512 }}
-          />
+          /> */}
+          <Image source={{ uri: photoURL}} style={{ width: '100%', height: 512 }} />
         </View>
         <Card.Title style={styles.text}>{photoData.info}</Card.Title>
         <Card.Divider />

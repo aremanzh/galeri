@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import { Platform } from "react-native";
+import { api } from "../config/api";
 
 const AuthContext = createContext();
 
@@ -15,7 +16,7 @@ const AuthProvider = ({ children }) => {
     loadFromAsyncStorage();
   }, []);
 
-  const API = "http://10.20.185.84:8000/api/v1";
+  const API = `${api}/api/v1`;
 
   // axios
   axios.defaults.baseURL = API;
