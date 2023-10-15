@@ -12,6 +12,7 @@ import axios from 'axios';
 import AlbumIndex from '../album/index';
 import PhotoIndex from '../photo/index';
 import PhotosList from '../../components/PhotosList';
+import ProfileIndex from '../profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,7 +50,7 @@ const Index = () => {
   return (
     // <Text>{JSON.stringify(photo, null, 2)}</Text>
     <ScrollView showsVerticalScrollIndicator={false}>
-      <PhotosList loading={true} photos={photo.photos} onRefresh={() => loadPhotos()}/>
+      <PhotosList loading={true} photos={photo.photos} onRefresh={() => loadPhotos()} />
     </ScrollView>
   )
 }
@@ -69,14 +70,13 @@ export default function HomeIndex({ navigation }) {
     } catch (error) {
       console.log(error);
     }
-
   }
 
   function Nav() {
     return (
       <View style={{ marginHorizontal: 20 }}>
         <Pressable onPress={() => navigation.navigate("Home")}>
-          <Image source={logo} style={{ width: 350, height: 80 }} resizeMode={'contain'} />
+          <Image source={logo} style={{ width: 280, height: 80 }} resizeMode={'contain'} />
         </Pressable>
       </View>
     )
@@ -85,9 +85,9 @@ export default function HomeIndex({ navigation }) {
   return (
     <Tab.Navigator screenOptions={{
       header: () => (
-        <View style={{flexDirection: "row", justifyContent:"space-between", alignItems: "center", backgroundColor: "white"}}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: "white" }}>
           <Nav />
-          <MaterialCommunityIcons name={"account"} size={25} color={"black"} style={{ marginHorizontal: 10 }} onPress={() => logout()}/>
+          <MaterialCommunityIcons name={"logout"} size={25} color={"black"} style={{ marginHorizontal: 10 }} onPress={() => logout()} />
         </View>
       )
     }}>
@@ -98,18 +98,25 @@ export default function HomeIndex({ navigation }) {
           <MaterialCommunityIcons name={focused ? "home" : "home-outline"} size={size} color={color} />
         )
       }} />
-      <Tab.Screen name="Carian" component={PhotoIndex} options={{
+      {/* <Tab.Screen name="Carian" component={PhotoIndex} options={{
         title: "Carian",
         headerTitleStyle: { opacity: 0 },
         tabBarIcon: ({ focused, color, size }) => (
           <MaterialCommunityIcons name={focused ? "image-search" : "image-search-outline"} size={size} color={color} />
         )
-      }} />
+      }} /> */}
       <Tab.Screen name="Album" component={AlbumIndex} options={{
         title: "Album",
         headerTitleStyle: { opacity: 0 },
         tabBarIcon: ({ focused, color, size }) => (
           <MaterialCommunityIcons name={focused ? "folder" : "folder-outline"} size={size} color={color} />
+        )
+      }} />
+      <Tab.Screen name="Profil" component={ProfileIndex} options={{
+        title: "Profil",
+        headerTitleStyle: { opacity: 0 },
+        tabBarIcon: ({ focused, color, size }) => (
+          <MaterialCommunityIcons name={focused ? "account" : "account-outline"} size={size} color={color} />
         )
       }} />
     </Tab.Navigator>

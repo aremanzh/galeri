@@ -53,7 +53,7 @@ export default function Signup({ navigation }) {
         await AsyncStorage.setItem('@auth', JSON.stringify(data));
         // alert("Login successful");
         setLoading(false);
-        navigation.navigate("Utama", { user: { id: data.user.id, name: data.user.staff_nama } });
+        navigation.navigate("Utama", { screen: 'Home', user: { id: data.user.id, name: data.user.staff_nama } });
       }
     } catch (err) {
       console.log(err);

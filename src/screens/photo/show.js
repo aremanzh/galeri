@@ -13,18 +13,18 @@ import { FileContext } from '../../context/file';
 export default function PhotoShow({ route }) {
   const [program, setProgram] = useContext(FileContext);
   const [status, requestPermission] = MediaLibrary.usePermissions();
-  
+
   const imageRef = useRef();
   const [photoURL, setPhotoURL] = useState(null);
   const [photoData, setPhotoData] = useState(null);
   const [album, setAlbum] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  
+
   if (status === null) {
     requestPermission();
   }
-  
+
   useEffect(() => {
     // Perform your asynchronous operation here, such as fetching data
     // For example, using a mock fetch with setTimeout:
@@ -35,7 +35,7 @@ export default function PhotoShow({ route }) {
       setPhotoData(photoData);
       setLoading(false);
     }, 1000); // Simulate a 1-second delay
-    
+
     // If you have any cleanup to perform, return a function from useEffect
     // For example, if you're setting up a timer, you can clear it here
     return () => {
@@ -60,12 +60,33 @@ export default function PhotoShow({ route }) {
       }
     } else {
       try {
-        const dataUrl = await domtoimage.toJpeg(imageRef.current);
+        const response = await fetch(photoURL, {
+          method: "GET",
+          mode: "no-cors"
+        });
 
-          console.log(dataUrl);
+        if (response.ok) {
+          // If the response is successful, create a blob from it
+          const blob = await response.blob();
 
+          // Create a URL for the blob
+          const url = window.URL.createObjectURL(blob);
+
+          // Create a link element to trigger the download
+          let link = document.createElement('a');
+          link.download = 'sticker-smash.jpeg';
+          link.href = url;
+
+          // Trigger the download by clicking the link
+          link.click();
+
+          // Clean up by revoking the object URL
+          window.URL.revokeObjectURL(url);
+        } else {
+          console.error('Response not ok', response.status, response.statusText);
+        }
       } catch (e) {
-        console.log('Error (web):', e); // Log web-specific errors for debugging
+        console.error(e);
       }
     }
   };
@@ -86,7 +107,7 @@ export default function PhotoShow({ route }) {
             resizeMode='cover'
             style={{ width: '100%', height: 512 }}
           /> */}
-          <Image source={{ uri: photoURL}} style={{ width: '100%', height: 512 }} />
+          <Image source={{ uri: photoURL }} style={{ width: '100%', height: 512 }} />
         </View>
         <Card.Title style={styles.text}>{photoData.info}</Card.Title>
         <Card.Divider />

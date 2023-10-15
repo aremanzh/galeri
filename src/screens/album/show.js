@@ -15,6 +15,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import useSearch from "../../hooks/useSearch";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "../../config/api";
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +50,26 @@ export default function AlbumShow({ route }) {
 
   console.log(album);
 
+  const handleDownload = async () => {
+    await axios.get(`${api}/api/v1/programs/${id}/download`)
+      .then(response => {
+        if (response.data.download_url) {
+          // If the response contains a download URL, you can use it to download the file.
+          const downloadUrl = response.data.download_url;
+          // Use downloadUrl for downloading the file.
+          console.log(downloadUrl);
+        } else {
+          // Handle the error case when the ZIP archive creation failed.
+          const error = response.data.error;
+          console.error(`Failed to create the ZIP archive: ${error}`);
+        }
+      })
+      .catch(error => {
+        // Handle any network or server errors here.
+        console.error('Network error:', error);
+      });
+  }
+
   return (
     <>
       <View style={{ marginHorizontal: 10, marginTop: 10 }}>
@@ -57,7 +78,7 @@ export default function AlbumShow({ route }) {
           onChangeText={updateSearch}
           value={keyword}
           searchIcon={() => (
-            <MaterialCommunityIcons name="file-search" size={25} color="gray"/>
+            <MaterialCommunityIcons name="file-search" size={25} color="gray" />
           )}
           clearIcon={() => (
             <MaterialCommunityIcons
@@ -101,7 +122,7 @@ export default function AlbumShow({ route }) {
             size={25}
             color="gray"
             style={{ marginRight: 10 }}
-            onPress={() => navigation.navigate("Photo.Create", {id: id})}
+            onPress={() => navigation.navigate("Photo.Create", { id: id })}
           />
         </View>
       </View>
@@ -140,7 +161,7 @@ export default function AlbumShow({ route }) {
               </>
             )}
           />
-          <Button title="Muat turun" />
+          <Button title="Muat turun" onPress={() => handleDownload()} />
         </>
       ) : (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -151,7 +172,7 @@ export default function AlbumShow({ route }) {
               color: "red",
             }}
           >
-            Tiada gambar berkaitan program ini.<br/>Sila tambahkan gambar terlebih
+            Tiada gambar berkaitan program ini.<br />Sila tambahkan gambar terlebih
             dahulu
           </Text>
         </View>

@@ -64,27 +64,40 @@ export default function PhotosList({ loading, photos, onRefresh }) {
             size={25}
             color="gray"
             style={{ marginRight: 10 }}
+            onPress={() => navigation.navigate('Album.Create')}
           />
         </View>
       </View>
-      <MasonryList showsVerticalScrollIndicator={false}
-        data={filteredData}
-        style={styles.list}
-        keyExtractor={(item, index) => index.toString()} // You may want to use a unique key
-        numColumns={2}
-        loading={loading}
-        onRefresh={onRefresh}
-        renderItem={({ item, index }) => (
-          <>
-            <Image
-              source={{ uri: API + item.uri }}
-              containerStyle={styles.item}
-              PlaceholderContent={<ActivityIndicator />}
-              onPress={() => navigation.navigate("Photo.Show", { id: item.id, source: API + item.uri, data: item })}
-            />
-          </>
-        )}
-      />
+      {filteredData.length > 0 ? (
+        <MasonryList showsVerticalScrollIndicator={false}
+          data={filteredData}
+          style={styles.list}
+          keyExtractor={(item, index) => index.toString()} // You may want to use a unique key
+          numColumns={2}
+          loading={loading}
+          onRefresh={onRefresh}
+          renderItem={({ item, index }) => (
+            <>
+              <Image
+                source={{ uri: API + item.uri }}
+                containerStyle={styles.item}
+                PlaceholderContent={<ActivityIndicator />}
+                onPress={() => navigation.navigate("Photo.Show", { id: item.id, source: API + item.uri, data: item })}
+              />
+            </>
+          )}
+        />) : (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text
+            style={{
+              fontFamily: "PlusJakartaBold",
+              color: "red",
+            }}
+          >
+            Tiada gambar berkaitan kata kunci ini.
+          </Text>
+        </View>
+      )}
     </>
   )
 }
