@@ -16,6 +16,7 @@ import useSearch from "../../hooks/useSearch";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "../../config/api";
 import axios from "axios";
+import { saveAs } from 'file-saver';
 
 const Stack = createNativeStackNavigator();
 

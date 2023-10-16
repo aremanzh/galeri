@@ -20,6 +20,7 @@ const Tab = createBottomTabNavigator();
 const Index = () => {
   const [photo, setPhoto] = useContext(FileContext);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadPhotos();
@@ -37,6 +38,7 @@ const Index = () => {
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setError(true);
       setLoading(false);
     }
   }
@@ -50,7 +52,7 @@ const Index = () => {
   return (
     // <Text>{JSON.stringify(photo, null, 2)}</Text>
     <ScrollView showsVerticalScrollIndicator={false}>
-      <PhotosList loading={true} photos={photo.photos} onRefresh={() => loadPhotos()} />
+      <PhotosList loading={true} error={error} photos={photo.photos} onRefresh={() => loadPhotos()} />
     </ScrollView>
   )
 }

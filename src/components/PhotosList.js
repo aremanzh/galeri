@@ -9,7 +9,7 @@ import MasonryList from '@react-native-seoul/masonry-list';
 import useSearch from '../hooks/useSearch';
 import { api } from '../config/api';
 
-export default function PhotosList({ loading, photos, onRefresh }) {
+export default function PhotosList({ loading, photos, onRefresh, error }) {
 
   const navigation = useNavigation();
 
@@ -87,7 +87,21 @@ export default function PhotosList({ loading, photos, onRefresh }) {
             </>
           )}
         />) : (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <>
+          {error === true ? (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text
+            style={{
+              fontFamily: "PlusJakartaBold",
+              color: "red",
+              textAlign: "center"
+            }}
+          >
+            Pangkalan data tidak dapat diakses.<br/> Pastikan anda mempunyai jaringan internet. <br/>Sekiranya masalah ini berlanjutan, sila hubungi pentadbir sistem.
+          </Text>
+        </View>
+        ) : (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text
             style={{
               fontFamily: "PlusJakartaBold",
@@ -97,6 +111,8 @@ export default function PhotosList({ loading, photos, onRefresh }) {
             Tiada gambar berkaitan kata kunci ini.
           </Text>
         </View>
+        )}
+        </>
       )}
     </>
   )
