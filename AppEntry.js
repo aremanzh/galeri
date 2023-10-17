@@ -12,6 +12,7 @@ import PhotoShow from './src/screens/photo/show';
 import AlbumShow from './src/screens/album/show';
 import AlbumCreate from './src/screens/album/create';
 import PhotoCreate from './src/screens/photo/create';
+import PhotoUpload from './src/screens/photo/upload';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +46,12 @@ const AppEntry = () => {
             headerShown: true,
             headerBackVisible: true
           })} />
-        <Stack.Screen name='Photo.Create' component={PhotoCreate} getId={({ params }) => { params.id }} options={({ route }) => ({
+        {/* <Stack.Screen name='Photo.Create' component={PhotoCreate} getId={({ params }) => { params.id }} options={({ route }) => ({
+            title: "Tambah Gambar",
+            headerShown: true,
+            headerBackVisible: true
+          })} /> */}
+        <Stack.Screen name='Photo.Upload' component={PhotoUpload} getId={({ params }) => { params.id }} options={({ route }) => ({
             title: "Tambah Gambar",
             headerShown: true,
             headerBackVisible: true

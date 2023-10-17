@@ -14,13 +14,11 @@ import { captureRef } from "react-native-view-shot";
 import domtoimage from "dom-to-image";
 import * as MediaLibrary from "expo-media-library";
 import FileSaver, { saveAs } from "file-saver";
-
+import { api } from "../../config/api";
 import { FileContext } from "../../context/file";
 import axios from "axios";
 
 export default function PhotoShow({ route }) {
-  const [program, setProgram] = useContext(FileContext);
-  const [photo, setPhoto] = useContext(FileContext);
   const [status, requestPermission] = MediaLibrary.usePermissions();
 
   const imageRef = useRef();
@@ -32,7 +30,7 @@ export default function PhotoShow({ route }) {
   if (status === null) {
     requestPermission();
   }
-  
+
   useEffect(() => {
     // Perform your asynchronous operation here, such as fetching data
     // For example, using a mock fetch with setTimeout:
@@ -42,9 +40,8 @@ export default function PhotoShow({ route }) {
       setPhotoURL(photoURL);
       setPhotoData(photoData);
       setLoading(false);
-      console.log(photoData.uri);
     }, 1000); // Simulate a 1-second delay
-    
+
     // If you have any cleanup to perform, return a function from useEffect
     // For example, if you're setting up a timer, you can clear it here
     return () => {
@@ -69,13 +66,30 @@ export default function PhotoShow({ route }) {
       }
     } else {
       try {
-        const dataUrl = await domtoimage.toJpeg(imageRef.current);
+        const response = await axios.get(`${api}/api/v1/photos/${photoData?.id}/download`, {
+          responseType: 'blob', // Set the response type to 'blob' to handle binary data
+        });
 
-        if(dataUrl){
-          console.log("good: " + dataUrl);
+        const name = photoData.uri;
+        console.log(name);
+        const resultName = name.split("images/");
+        const result = resultName[1];
+
+      
+        // Check the HTTP response status
+        if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = result; // You can set the filename here
+          link.click();
+          window.URL.revokeObjectURL(url);
+        } else {
+          console.error('Failed to download the file. Server returned a non-200 status code.');
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        // Handle network or other errors here
+        console.error('Network error:', error);
       }
     }
   };
@@ -98,8 +112,9 @@ export default function PhotoShow({ route }) {
             resizeMode='cover'
             style={{ width: '100%', height: 512 }}
           /> */}
-          <Image id="photo"
-            source={{ uri: photoData.uri }}
+          <Image
+            id="photo"
+            source={{ uri: photoURL }}
             style={{ width: "100%", height: 512 }}
           />
         </View>

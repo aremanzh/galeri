@@ -57,8 +57,13 @@ export default function AlbumShow({ route }) {
         if (response.data.download_url) {
           // If the response contains a download URL, you can use it to download the file.
           const downloadUrl = response.data.download_url;
-          // Use downloadUrl for downloading the file.
-          console.log(downloadUrl);
+          // Create a link element to trigger the download
+          let link = document.createElement('a');
+          link.download = downloadUrl;
+          link.href = downloadUrl;
+      
+          // Trigger the download by clicking the link
+          link.click();
         } else {
           // Handle the error case when the ZIP archive creation failed.
           const error = response.data.error;
@@ -123,7 +128,7 @@ export default function AlbumShow({ route }) {
             size={25}
             color="gray"
             style={{ marginRight: 10 }}
-            onPress={() => navigation.navigate("Photo.Create", { id: id })}
+            onPress={() => navigation.navigate("Photo.Upload", { id: id })}
           />
         </View>
       </View>
