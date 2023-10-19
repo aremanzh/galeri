@@ -57,7 +57,7 @@ export default function PhotosList({ loading, photos, onRefresh, error }) {
         />
         <View style={{ flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
           <Text style={{ marginLeft: 10, fontFamily: "PlusJakartaBold", fontSize: 20 }}>
-            Semua Gambar
+            Semua Gambar ({filteredData.length})
           </Text>
           <MaterialCommunityIcons
             name='file-plus'

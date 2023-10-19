@@ -10,7 +10,8 @@ export default function useSearch() {
   // const filteredTasks = task?.tasks?.filter((t) => t.task.toLowerCase().includes(keyword))
   const filteredData = photo?.photos?.filter((photo) => (
     (photo.info && photo.info.toLowerCase().includes(keyword)) ||
-    (photo?.program?.name && photo?.program?.name.toLowerCase().includes(keyword))
+    (photo?.program?.name && photo?.program?.name.toLowerCase().includes(keyword)) || 
+    (photo?.uri && photo?.uri.toLowerCase().includes(keyword))
   ));
 
   const filteredProgram = program?.albums?.filter((program) => (

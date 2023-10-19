@@ -26,7 +26,7 @@ export default function Signin({ navigation }) {
       console.log(data);
 
       if (data.error) {
-        alert(data.error);
+        alert("masalah");
         setLoading(false);
       } else {
 
@@ -34,7 +34,7 @@ export default function Signin({ navigation }) {
         await AsyncStorage.setItem('@auth', JSON.stringify(data));
         // alert("Login successful");
         setLoading(false);
-        navigation.navigate("Utama", { user: { id: data.user.id, name: data.user.staff_nama } });
+        navigation.navigate("Utama", { screen: 'Home',user: { id: data.user.id, name: data.user.staff_nama } });
       }
     } catch (err) {
       console.log(err);

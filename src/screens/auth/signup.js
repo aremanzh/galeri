@@ -42,9 +42,6 @@ export default function Signup({ navigation }) {
         staff_bio: "",
       });
 
-      console.log(data);
-      setLoading(false);
-
       if (data.error) {
         alert(data.error);
         setLoading(false);

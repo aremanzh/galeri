@@ -11,6 +11,7 @@ import { api } from '../config/api';
 
 export default function AlbumList({ loading, programs }) {
   const navigation = useNavigation();
+  const [albums, setAlbums] = useState(programs);
 
   const updateSearch = (search) => {
     setKeyword(search);
@@ -20,9 +21,50 @@ export default function AlbumList({ loading, programs }) {
     setKeyword(''); // Clear the search value
   };
 
-  const { keyword, setKeyword, filteredProgram } = useSearch(programs);
+  const { keyword, setKeyword, filteredProgram } = useSearch(albums);
 
   // const API = "http://10.20.185.84:8000";
+  function sentenceCase(str) {
+    if (!str) {
+        return ""
+    }
+    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  }
+
+  function calculateFileSize(speedStr) {
+    // Check if the input string can be treated as a number
+    var speed = parseFloat(speedStr);
+    if (isNaN(speed)) {
+      return "Invalid input. Please provide a valid number.";
+    }
+  
+    // Determine the appropriate unit based on the magnitude of the number
+    let unit;
+    if (speed > 1000) {
+      speed /= 1000; // Convert to KB/s
+      unit = "Megabytes";
+    } else {
+      unit = "Kilobytes";
+    }
+  
+    // Format the result with 2 decimal places
+    return `${speed.toFixed(2)} ${unit}`;
+  }
+
+  function dateFormat(date) {
+    // Parse the input date string and convert it to the Asia/Singapore timezone
+    const inputDate = new Date(date);
+    const singaporeTimezone = 'Asia/Singapore';
+  
+    const singaporeDate = new Intl.DateTimeFormat('en-SG', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: singaporeTimezone,
+    }).format(inputDate);
+  
+    return singaporeDate;
+  }
 
   return (
     <>
@@ -65,13 +107,13 @@ export default function AlbumList({ loading, programs }) {
           />
         </View>
       </View>
-
       <FlatList
+      showsVerticalScrollIndicator={false}
         data={filteredProgram}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <Card key={index}>
-            <Card.Title style={{fontFamily: "PlusJakartaBold"}}>{item.name}</Card.Title>
+            <Card.Title style={{fontFamily: "PlusJakartaBold"}}>{item.name.toUpperCase()}</Card.Title>
             <Card.Divider />
             {item.photos && item.photos.length > 0 ? (
               <Card.Image
@@ -79,7 +121,7 @@ export default function AlbumList({ loading, programs }) {
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode="contain"
-                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item, album: programs })}
+                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item, album: albums })}
               />
             ) : (
               <Card.Image
@@ -87,16 +129,28 @@ export default function AlbumList({ loading, programs }) {
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
                 resizeMode="contain"
-                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item, album: programs })}
+                onPress={() => navigation.navigate('Album.Show', { id: item.id, photos: item, album: albums })}
               />
               // <Text style={styles.text && {textAlign: "center"}}>No photos available</Text>
             )}
-            <Text style={styles.text}>
-              {item.desc}
-            </Text>
+            <Card.Divider />
+            <View style={styles.desc}>
+              <Text style={styles.text}>Info Program: </Text><Text style={{fontFamily: "PlusJakarta"}}>{sentenceCase(item.desc)}</Text>
+            </View>
+            <View style={styles.desc}>
+              <Text style={styles.text}>Jumlah Gambar: </Text><Text style={{fontFamily: "PlusJakarta"}}>{item.image_count} Gambar</Text>
+            </View>
+            <View style={styles.desc}>
+              <Text style={styles.text}>Saiz Program: </Text><Text style={{fontFamily: "PlusJakarta"}}>{calculateFileSize(item.total_size)}</Text>
+            </View>
+            <View style={styles.desc}>
+              <Text style={styles.text}>Tarikh Album: </Text><Text style={{fontFamily: "PlusJakarta"}}>{dateFormat(item.created_at)}</Text>
+            </View>
           </Card>
         )}
       />
+
+      
     </>
   );
 }
@@ -108,9 +162,13 @@ const styles = StyleSheet.create({
   item: {
     width: '100%',
     flex: 1,
+    marginBottom: 10
+  },
+  desc: {
+    flexDirection:'row',
   },
   text: {
     marginBottom: 10,
-    fontFamily: "PlusJakarta"
+    fontFamily: "PlusJakartaBold"
   }
 });

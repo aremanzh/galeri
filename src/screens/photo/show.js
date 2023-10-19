@@ -17,8 +17,11 @@ import FileSaver, { saveAs } from "file-saver";
 import { api } from "../../config/api";
 import { FileContext } from "../../context/file";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
+
 
 export default function PhotoShow({ route }) {
+  const navigation = useNavigation();
   const [status, requestPermission] = MediaLibrary.usePermissions();
 
   const imageRef = useRef();
@@ -126,7 +129,8 @@ export default function PhotoShow({ route }) {
         <Text style={styles.text}>Saiz: {photoData.size} kilobytes</Text>
         <Text style={styles.text}>Tarikh: {photoData.created_at}</Text>
         <Card.Divider />
-        <Button title="Muat turun" onPress={onSaveImageAsync} />
+        <Button style={{marginBottom: 10}} color='warning' title="Kemaskini" onPress={() => navigation.navigate("Photo.Edit", { id: photoData?.id, currentImage: photoURL})} />
+        <Button style={{marginBottom: 10}} color='primary' title="Muat turun" onPress={onSaveImageAsync} />
       </Card>
     </ScrollView>
   );
