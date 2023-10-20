@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { Button, Input, Text } from "@rneui/themed";
 import ImageViewer from "../../components/ImageViewer";
 import { StatusBar } from "expo-status-bar";
@@ -53,6 +53,7 @@ export default function PhotoUpload({ route }) {
   };
 
   const uploadImageAsync = async () => {
+    setLoading(true);
     try {
       const formData = new FormData();
 
@@ -63,16 +64,24 @@ export default function PhotoUpload({ route }) {
       formData.append("info", info);
       formData.append("program_id", id);
 
-      console.log(formData);
       const { data } = await axios.post("/photos", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      console.log(data);
+      if(data.errors){
+        console.log(data.errors);
+        setLoading(false);
+      } else {
+        console.log(data.message);
+        setLoading(false);
+        navigation.navigate("Utama", { screen: "Album"});
+      }
+
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -148,6 +157,14 @@ export default function PhotoUpload({ route }) {
       </View>
     );
   };
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <ActivityIndicator></ActivityIndicator>
+      </View>
+    );
+  }
 
   return (
     <>

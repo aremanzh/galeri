@@ -146,6 +146,9 @@ export default function AlbumList({ loading, programs }) {
             <View style={styles.desc}>
               <Text style={styles.text}>Tarikh Album: </Text><Text style={{fontFamily: "PlusJakarta"}}>{dateFormat(item.created_at)}</Text>
             </View>
+            <View style={styles.desc}>
+              <Text style={styles.text}>Tarikh Kemaskini: </Text><Text style={{fontFamily: "PlusJakarta"}}>{dateFormat(item.updated_at)}</Text>
+            </View>
           </Card>
         )}
       />

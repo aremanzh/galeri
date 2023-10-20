@@ -17,6 +17,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "../../config/api";
 import axios from "axios";
 import { saveAs } from 'file-saver';
+import sentenceCase from '../../helpers/sentenceCase.js'
 
 const Stack = createNativeStackNavigator();
 
@@ -121,7 +122,7 @@ export default function AlbumShow({ route }) {
               fontSize: 20,
             }}
           >
-            {albumData.name}
+            {sentenceCase(albumData.name)}
           </Text>
           <MaterialCommunityIcons
             name="file-plus"

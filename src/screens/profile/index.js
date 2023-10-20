@@ -17,13 +17,16 @@ export default function ProfileIndex() {
   }
 
   const logout = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.post(`/logout/${auth?.user?.id}`);
       console.log(data)
       setAuth({ user: null, token: "" });
       await AsyncStorage.removeItem("@auth");
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -32,6 +35,11 @@ export default function ProfileIndex() {
       <Card>
         <Card.Title style={styles.text}>Profil Pengguna</Card.Title>
         <Card.Divider />
+        <Input
+          label="Akaun: "
+          value={auth?.user?.role}
+          disabled={true}
+        />
         <Input
           label="Nama: "
           value={auth?.user?.staff_nama}

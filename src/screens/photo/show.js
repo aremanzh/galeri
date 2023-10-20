@@ -19,6 +19,11 @@ import { FileContext } from "../../context/file";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
+// Helpers Functions
+import sentenceCase from "../../helpers/sentenceCase";
+import dateFormat from "../../helpers/dateFormat";
+import calculateFileSize from "../../helpers/calculateFileSize";
+import extractFileName from "../../helpers/extractFileName";
 
 export default function PhotoShow({ route }) {
   const navigation = useNavigation();
@@ -97,6 +102,25 @@ export default function PhotoShow({ route }) {
     }
   };
 
+  const onDelete = async () => {
+    setLoading(true)
+    try {
+      const { data } = await axios.post(`photos/${photoData?.id}/archive`, {id: photoData?.id});
+      if(data.errors){
+        console.log(data.errors);
+        setLoading(false);
+        return;
+      } else {
+        console.log(data.message);
+        navigation.navigate("Utama", { screen: "Home"})
+        setLoading(false);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false)
+    }
+  }
+
   if (loading) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -121,15 +145,18 @@ export default function PhotoShow({ route }) {
             style={{ width: "100%", height: 512 }}
           />
         </View>
-        <Card.Title style={styles.text}>{photoData.info}</Card.Title>
+        <Card.Title style={styles.title}>{extractFileName(photoURL)}</Card.Title>
         <Card.Divider />
         {/* <Text style={styles.text}>
           Album: {album.name || photoData.program.name}
         </Text> */}
-        <Text style={styles.text}>Saiz: {photoData.size} kilobytes</Text>
-        <Text style={styles.text}>Tarikh: {photoData.created_at}</Text>
+        <Text style={styles.text}>Deskripsi: {sentenceCase(photoData.info)}</Text>
+        <Text style={styles.text}>Saiz: {calculateFileSize(photoData.size)}</Text>
+        <Text style={styles.text}>Tarikh: {dateFormat(photoData.created_at)}</Text>
+        <Text style={styles.text}>Tarikh Kemaskini: {dateFormat(photoData.updated_at)}</Text>
         <Card.Divider />
         <Button style={{marginBottom: 10}} color='warning' title="Kemaskini" onPress={() => navigation.navigate("Photo.Edit", { id: photoData?.id, currentImage: photoURL})} />
+        <Button style={{marginBottom: 10}} color='error' title="Hapus" onPress={() => onDelete()} />
         <Button style={{marginBottom: 10}} color='primary' title="Muat turun" onPress={onSaveImageAsync} />
       </Card>
     </ScrollView>
@@ -145,8 +172,13 @@ const styles = StyleSheet.create({
     height: 300,
     flex: 1,
   },
-  text: {
+  title: {
     fontFamily: "PlusJakartaBold",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  text: {
+    fontFamily: "PlusJakarta",
     marginBottom: 10,
   },
 });

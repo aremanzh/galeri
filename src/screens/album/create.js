@@ -26,7 +26,7 @@ export default function AlbumCreate() {
       } else {
         setProgram({ ...program, albums: [data, ...program.albums] }); // Use program.albums here
         setLoading(false);
-        navigation.navigate("Utama");
+        navigation.navigate("Utama", { screen: "Home"});
       }
     } catch (err) {
       console.log(err);
