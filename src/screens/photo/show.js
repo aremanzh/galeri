@@ -7,15 +7,9 @@ import {
   View,
 } from "react-native";
 import { Button, Card, Image, SearchBar, Text } from "@rneui/themed";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { captureRef } from "react-native-view-shot";
-// import domtoimage from 'dom-to-image-more';
-import domtoimage from "dom-to-image";
 import * as MediaLibrary from "expo-media-library";
-import FileSaver, { saveAs } from "file-saver";
 import { api } from "../../config/api";
-import { FileContext } from "../../context/file";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 

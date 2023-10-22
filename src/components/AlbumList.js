@@ -8,6 +8,9 @@ import { useNavigation } from "@react-navigation/native";
 import MasonryList from '@react-native-seoul/masonry-list';
 import useSearch from '../hooks/useSearch';
 import { api } from '../config/api';
+import sentenceCase from '../helpers/sentenceCase'
+import calculateFileSize from '../helpers/calculateFileSize'
+import dateFormat from '../helpers/dateFormat'
 
 export default function AlbumList({ loading, programs }) {
   const navigation = useNavigation();
@@ -24,47 +27,47 @@ export default function AlbumList({ loading, programs }) {
   const { keyword, setKeyword, filteredProgram } = useSearch(albums);
 
   // const API = "http://10.20.185.84:8000";
-  function sentenceCase(str) {
-    if (!str) {
-        return ""
-    }
-    return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
-  }
+  // function sentenceCase(str) {
+  //   if (!str) {
+  //       return ""
+  //   }
+  //   return str.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
+  // }
 
-  function calculateFileSize(speedStr) {
-    // Check if the input string can be treated as a number
-    var speed = parseFloat(speedStr);
-    if (isNaN(speed)) {
-      return "Invalid input. Please provide a valid number.";
-    }
+  // function calculateFileSize(speedStr) {
+  //   // Check if the input string can be treated as a number
+  //   var speed = parseFloat(speedStr);
+  //   if (isNaN(speed)) {
+  //     return "Invalid input. Please provide a valid number.";
+  //   }
   
-    // Determine the appropriate unit based on the magnitude of the number
-    let unit;
-    if (speed > 1000) {
-      speed /= 1000; // Convert to KB/s
-      unit = "Megabytes";
-    } else {
-      unit = "Kilobytes";
-    }
+  //   // Determine the appropriate unit based on the magnitude of the number
+  //   let unit;
+  //   if (speed > 1000) {
+  //     speed /= 1000; // Convert to KB/s
+  //     unit = "Megabytes";
+  //   } else {
+  //     unit = "Kilobytes";
+  //   }
   
-    // Format the result with 2 decimal places
-    return `${speed.toFixed(2)} ${unit}`;
-  }
+  //   // Format the result with 2 decimal places
+  //   return `${speed.toFixed(2)} ${unit}`;
+  // }
 
-  function dateFormat(date) {
-    // Parse the input date string and convert it to the Asia/Singapore timezone
-    const inputDate = new Date(date);
-    const singaporeTimezone = 'Asia/Singapore';
+  // function dateFormat(date) {
+  //   // Parse the input date string and convert it to the Asia/Singapore timezone
+  //   const inputDate = new Date(date);
+  //   const singaporeTimezone = 'Asia/Singapore';
   
-    const singaporeDate = new Intl.DateTimeFormat('en-SG', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      timeZone: singaporeTimezone,
-    }).format(inputDate);
+  //   const singaporeDate = new Intl.DateTimeFormat('en-SG', {
+  //     year: 'numeric',
+  //     month: '2-digit',
+  //     day: '2-digit',
+  //     timeZone: singaporeTimezone,
+  //   }).format(inputDate);
   
-    return singaporeDate;
-  }
+  //   return singaporeDate;
+  // }
 
   return (
     <>
@@ -169,6 +172,7 @@ const styles = StyleSheet.create({
   },
   desc: {
     flexDirection:'row',
+    flexWrap: 'wrap'
   },
   text: {
     marginBottom: 10,

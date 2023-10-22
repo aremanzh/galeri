@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { View, StyleSheet, ActivityIndicator, Platform } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Platform, ScrollView } from 'react-native'
 import { AuthContext } from '../../context/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -59,15 +59,17 @@ export default function Signup({ navigation }) {
   };
 
   if (loading) {
-    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
       <ActivityIndicator></ActivityIndicator>
     </View>
   }
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={logo} style={Platform.OS !== "web" ? { width: 300, height: 100 } : { width: 420, height: 100 }} resizeMode="contain" />
-      <View style={{ width: '80%', marginTop: 20 }}>
+    <View style={{ flex: 1, width: "100%" }}>
+      <ScrollView contentContainerStyle={{flexGrow:1,flexDirection: "column", alignContent: "center", justifyContent: "center", paddingHorizontal: 10}}>
+        <View style={{alignItems: "center"}}>
+          <Image source={logo} style={{width: 300, height: 100}} resizeMode="contain" />
+        </View>
         <Input
           label="Nama"
           placeholder='AMIRUL MUQMININ'
@@ -77,8 +79,6 @@ export default function Signup({ navigation }) {
           keyboardType="default"
           value={nama}
         />
-      </View>
-      <View style={{ width: '80%', marginTop: 20 }}>
         <Input
           label="Nombor Kad Pengenalan"
           placeholder='81xxxxxxxxxx'
@@ -88,8 +88,6 @@ export default function Signup({ navigation }) {
           keyboardType="numeric"
           value={id}
         />
-      </View>
-      <View style={{ width: '80%', marginTop: 20 }}>
         <Input
           label="Emel Rasmi"
           placeholder='emel@jpm.gov.my'
@@ -99,8 +97,6 @@ export default function Signup({ navigation }) {
           keyboardType="email-address"
           value={emel}
         />
-      </View>
-      <View style={{ width: '80%', marginTop: 20 }}>
         <Input
           label="Kata Laluan"
           placeholder='xxxxxxxxxx'
@@ -110,8 +106,6 @@ export default function Signup({ navigation }) {
           autoComplete="password"
           value={password}
         />
-      </View>
-      <View style={{ width: '80%', marginTop: 20 }}>
         <Input
           label="Pengesahan Kata Laluan"
           placeholder='xxxxxxxxxx'
@@ -121,8 +115,7 @@ export default function Signup({ navigation }) {
           secureTextEntry={true}
           autoComplete="password"
         />
-      </View>
-      <View style={{ width: '80%', marginTop: 20, paddingHorizontal: 10 }}>
+      <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
         <Text>Bahagian</Text>
         <Picker
           selectedValue={bahagian}
@@ -157,7 +150,7 @@ export default function Signup({ navigation }) {
           <Picker.Item label="ZON SARAWAK" value="26" />
         </Picker>
       </View>
-      <View style={{ width: '80%', marginTop: 20, paddingHorizontal: 10 }}>
+      <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
         <Text>Jawatan</Text>
         <Picker
           selectedValue={jawatan}
@@ -216,10 +209,13 @@ export default function Signup({ navigation }) {
           <Picker.Item label="PEMBANTU MYSTEP" value="50" />
         </Picker>
       </View>
-      <View style={{ width: '80%', marginTop: 20, paddingHorizontal: 10 }}>
+      <View style={{ marginTop: 20, paddingHorizontal: 10 }}>
         {id && password ? <Button title="Log Masuk" onPress={() => handleSubmit()} /> : <Button disabled title="Log Masuk" onPress={() => navigation.navigate("Utama")} />}
       </View>
-      <Text style={styles.text} onPress={() => navigation.navigate("Signin")}>Sudah berdaftar? Log masuk disini</Text>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.text} onPress={() => navigation.navigate("Signin")}>Sudah berdaftar? Log masuk disini</Text>
+      </View>
+      </ScrollView>
     </View>
   )
 }

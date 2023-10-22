@@ -1,25 +1,20 @@
 import React, { useState } from "react";
 import {
-  ScrollView,
   ActivityIndicator,
   StyleSheet,
-  Platform,
   View,
   Pressable,
 } from "react-native";
 import { Button, Card, Image, SearchBar, Text } from "@rneui/themed";
 import MasonryList from "@react-native-seoul/masonry-list";
-import PhotosList from "../../components/PhotosList";
 import { useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import useSearch from "../../hooks/useSearch";
+// import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "../../config/api";
 import axios from "axios";
-import { saveAs } from 'file-saver';
 import sentenceCase from '../../helpers/sentenceCase.js'
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
 
 export default function AlbumShow({ route }) {
   const navigation = useNavigation();
@@ -179,7 +174,7 @@ export default function AlbumShow({ route }) {
               color: "red",
             }}
           >
-            Tiada gambar berkaitan program ini.<br />Sila tambahkan gambar terlebih
+            Tiada gambar berkaitan program ini.{'\n'}Sila tambahkan gambar terlebih
             dahulu
           </Text>
         </View>

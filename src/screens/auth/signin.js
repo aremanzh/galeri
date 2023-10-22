@@ -51,7 +51,7 @@ export default function Signin({ navigation }) {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={logo} style={Platform.OS !== "web" ? { width: 300, height: 100 } : { width: 420, height: 100 }} resizeMode="contain" />
+      <Image source={logo} style={{width: 300, height: 100}} resizeMode="contain" />
       <View style={{ width: '80%', marginTop: 20 }}>
         {/* <Text h4 h4Style={styles.h4Style} style={styles.text}>Nombor Kad Pengenalan</Text> */}
         <Input

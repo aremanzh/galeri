@@ -3,8 +3,10 @@ import { View, StyleSheet, ActivityIndicator, Platform } from 'react-native'
 import axios from 'axios';
 import { Text, Input, Image, Icon, Button } from '@rneui/themed';
 import { FileContext } from '../../context/file';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AlbumCreate() {
+  const navigation = useNavigation();
   const [program, setProgram] = useContext(FileContext);
   const [name, setName] = useState(""); // Nama program
   const [desc, setDesc] = useState(""); // Maklumat program

@@ -108,7 +108,7 @@ export default function PhotosList({ loading, photos, onRefresh, error }) {
               color: "red",
             }}
           >
-            Tiada gambar berkaitan kata kunci ini.
+            Tiada gambar gambar yang dijumpai.
           </Text>
         </View>
         )}
