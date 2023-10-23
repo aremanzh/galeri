@@ -164,6 +164,7 @@ export default function AlbumShow({ route }) {
             )}
           />
           <Button title="Muat turun" onPress={() => handleDownload()} />
+          <Button title="Hapuskan" color={"error"} onPress={() => alert("Hapuskan")} />
         </>
       ) : (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

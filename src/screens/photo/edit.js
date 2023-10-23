@@ -31,6 +31,11 @@ export default function PhotoEdit({ route }) {
 
     const uploadImageAsync = async () => {
       setLoading(true);
+      if(!info){
+        setLoading(false);
+        alert("Sila isikan maklumat gambar!");
+        return;
+      }
       try {
         const formData = new FormData();
 

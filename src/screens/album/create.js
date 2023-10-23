@@ -13,8 +13,13 @@ export default function AlbumCreate() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    setLoading(true);
+    if(!name && !desc){
+      setLoading(false)
+      alert("Sila isikan nama dan maklumat program!")
+      return;
+    }
     try {
-      setLoading(true);
       const { data } = await axios.post("/albums", {
         name,
         desc

@@ -9,9 +9,9 @@ export default function calculateFileSize(speedStr) {
     let unit;
     if (speed > 1000) {
       speed /= 1000; // Convert to KB/s
-      unit = "Megabit";
+      unit = "MB";
     } else {
-      unit = "Kilobit";
+      unit = "KB";
     }
   
     // Format the result with 2 decimal places
