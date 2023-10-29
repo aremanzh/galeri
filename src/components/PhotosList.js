@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import MasonryList from '@react-native-seoul/masonry-list';
 import useSearch from '../hooks/useSearch';
 import { api } from '../config/api';
+import extractFileName from '../helpers/extractFileName';
 
 export default function PhotosList({ loading, photos, onRefresh, error }) {
 
@@ -59,13 +60,15 @@ export default function PhotosList({ loading, photos, onRefresh, error }) {
           <Text style={{ marginLeft: 10, fontFamily: "PlusJakartaBold", fontSize: 20 }}>
             Semua Gambar ({filteredData.length})
           </Text>
-          <MaterialCommunityIcons
-            name='file-plus'
-            size={25}
-            color="gray"
-            style={{ marginRight: 10 }}
-            onPress={() => navigation.navigate('Album.Create')}
-          />
+          <Pressable style={styles.row} onPress={() => navigation.navigate('Album.Create')}>
+            <Text style={styles.text}>Tambah</Text>
+            <MaterialCommunityIcons
+              name='file-plus'
+              size={25}
+              color="gray"
+              style={{ marginRight: 10 }}
+            />
+          </Pressable>
         </View>
       </View>
       {filteredData.length > 0 ? (
@@ -82,36 +85,36 @@ export default function PhotosList({ loading, photos, onRefresh, error }) {
                 source={{ uri: API + item.uri }}
                 containerStyle={styles.item}
                 PlaceholderContent={<ActivityIndicator />}
-                onPress={() => navigation.navigate("Photo.Show", { id: item.id, source: API + item.uri, data: item })}
+                onPress={() => navigation.navigate("Photo.Show", { id: item.id, source: API + item.uri, data: item, name: item.uri })}
               />
             </>
           )}
         />) : (
         <>
           {error === true ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text
-            style={{
-              fontFamily: "PlusJakartaBold",
-              color: "red",
-              textAlign: "center"
-            }}
-          >
-            Pangkalan data tidak dapat diakses.<br/> Pastikan anda mempunyai jaringan internet. <br/>Sekiranya masalah ini berlanjutan, sila hubungi pentadbir sistem.
-          </Text>
-        </View>
-        ) : (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text
-            style={{
-              fontFamily: "PlusJakartaBold",
-              color: "red",
-            }}
-          >
-            Tiada gambar gambar yang dijumpai.
-          </Text>
-        </View>
-        )}
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontFamily: "PlusJakartaBold",
+                  color: "red",
+                  textAlign: "center"
+                }}
+              >
+                Pangkalan data tidak dapat diakses.<br /> Pastikan anda mempunyai jaringan internet. <br />Sekiranya masalah ini berlanjutan, sila hubungi pentadbir sistem.
+              </Text>
+            </View>
+          ) : (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontFamily: "PlusJakartaBold",
+                  color: "red",
+                }}
+              >
+                Tiada gambar gambar yang dijumpai.
+              </Text>
+            </View>
+          )}
         </>
       )}
     </>
@@ -130,4 +133,13 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  row: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  text: {
+    textAlign: "center",
+    fontFamily: "PlusJakartaBold",
+    marginRight: 6
+  }
 });

@@ -77,7 +77,7 @@ export default function PhotoShow({ route }) {
         const resultName = name.split("images/");
         const result = resultName[1];
 
-      
+
         // Check the HTTP response status
         if (response.status === 200) {
           const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -98,20 +98,25 @@ export default function PhotoShow({ route }) {
 
   const onDelete = async () => {
     setLoading(true)
-    try {
-      const { data } = await axios.post(`photos/${photoData?.id}/archive`, {id: photoData?.id});
-      if(data.errors){
-        console.log(data.errors);
-        setLoading(false);
-        return;
-      } else {
-        console.log(data.message);
-        navigation.navigate("Utama", { screen: "Home"})
-        setLoading(false);
+    if (confirm('Anda pasti mahu hapuskan gambar ini?')) {
+      try {
+        const { data } = await axios.post(`photos/${photoData?.id}/archive`, { id: photoData?.id });
+        if (data.errors) {
+          console.log(data.errors);
+          setLoading(false);
+          return;
+        } else {
+          console.log(data.message);
+          navigation.navigate("Utama", { screen: "Home" })
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log(err);
+        setLoading(false)
       }
-    } catch (err) {
-      console.log(err);
-      setLoading(false)
+    } else {
+      alert("Tindakan dibatalkan");
+      setLoading(false);
     }
   }
 
@@ -136,7 +141,7 @@ export default function PhotoShow({ route }) {
           <Image
             id="photo"
             source={{ uri: photoURL }}
-            style={{ width: "100%", height: 512 }}
+            style={{ width: "100%", height: 512, resizeMode: "contain" }}
           />
         </View>
         <Card.Title style={styles.title}>{extractFileName(photoURL)}</Card.Title>
@@ -149,9 +154,9 @@ export default function PhotoShow({ route }) {
         <Text style={styles.text}>Tarikh: {dateFormat(photoData.created_at)}</Text>
         <Text style={styles.text}>Tarikh Kemaskini: {dateFormat(photoData.updated_at)}</Text>
         <Card.Divider />
-        <Button style={{marginBottom: 10}} color='warning' title="Kemaskini" onPress={() => navigation.navigate("Photo.Edit", { id: photoData?.id, currentImage: photoURL})} />
-        <Button style={{marginBottom: 10}} color='error' title="Hapus" onPress={() => onDelete()} />
-        <Button style={{marginBottom: 10}} color='primary' title="Muat turun" onPress={onSaveImageAsync} />
+        <Button style={{ marginBottom: 10 }} color='warning' title="Kemaskini" onPress={() => navigation.navigate("Photo.Edit", { id: photoData?.id, currentImage: photoURL })} />
+        <Button style={{ marginBottom: 10 }} color='error' title="Hapus" onPress={() => onDelete()} />
+        <Button style={{ marginBottom: 10 }} color='primary' title="Muat turun" onPress={onSaveImageAsync} />
       </Card>
     </ScrollView>
   );

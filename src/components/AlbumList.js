@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { FlatList, ScrollView, ActivityIndicator, StyleSheet, View} from 'react-native';
+import { FlatList, ScrollView, ActivityIndicator, StyleSheet, View, Pressable } from 'react-native';
 import { Card, Image, SearchBar, Text } from '@rneui/themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -40,7 +40,7 @@ export default function AlbumList({ loading, programs }) {
   //   if (isNaN(speed)) {
   //     return "Invalid input. Please provide a valid number.";
   //   }
-  
+
   //   // Determine the appropriate unit based on the magnitude of the number
   //   let unit;
   //   if (speed > 1000) {
@@ -49,7 +49,7 @@ export default function AlbumList({ loading, programs }) {
   //   } else {
   //     unit = "Kilobytes";
   //   }
-  
+
   //   // Format the result with 2 decimal places
   //   return `${speed.toFixed(2)} ${unit}`;
   // }
@@ -58,20 +58,20 @@ export default function AlbumList({ loading, programs }) {
   //   // Parse the input date string and convert it to the Asia/Singapore timezone
   //   const inputDate = new Date(date);
   //   const singaporeTimezone = 'Asia/Singapore';
-  
+
   //   const singaporeDate = new Intl.DateTimeFormat('en-SG', {
   //     year: 'numeric',
   //     month: '2-digit',
   //     day: '2-digit',
   //     timeZone: singaporeTimezone,
   //   }).format(inputDate);
-  
+
   //   return singaporeDate;
   // }
 
   return (
     <>
-    <View style={{ marginHorizontal: 10 }}>
+      <View style={{ marginHorizontal: 10 }}>
         <SearchBar
           placeholder="Carian gambar atau program"
           onChangeText={updateSearch}
@@ -101,22 +101,24 @@ export default function AlbumList({ loading, programs }) {
           <Text style={{ marginLeft: 10, fontFamily: "PlusJakartaBold", fontSize: 20 }}>
             Semua Program
           </Text>
-          <MaterialCommunityIcons
-            name='file-plus'
-            size={25}
-            color="gray"
-            style={{ marginRight: 10 }}
-            onPress={() => navigation.navigate("Album.Create")}
-          />
+          <Pressable style={styles.row} onPress={() => navigation.navigate("Album.Create")}>
+            <Text style={styles.create}>Tambah</Text>
+            <MaterialCommunityIcons
+              name='file-plus'
+              size={25}
+              color="gray"
+              style={{ marginRight: 10 }}
+            />
+          </Pressable>
         </View>
       </View>
       <FlatList
-      showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         data={filteredProgram}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <Card key={index}>
-            <Card.Title style={{fontFamily: "PlusJakartaBold"}}>{item.name.toUpperCase()}</Card.Title>
+            <Card.Title style={{ fontFamily: "PlusJakartaBold" }}>{item.name.toUpperCase()}</Card.Title>
             <Card.Divider />
             {item.photos && item.photos.length > 0 ? (
               <Card.Image
@@ -138,25 +140,25 @@ export default function AlbumList({ loading, programs }) {
             )}
             <Card.Divider />
             <View style={styles.desc}>
-              <Text style={styles.text}>Info Program: </Text><Text style={{fontFamily: "PlusJakarta"}}>{sentenceCase(item.desc)}</Text>
+              <Text style={styles.text}>Info Program: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{sentenceCase(item.desc)}</Text>
             </View>
             <View style={styles.desc}>
-              <Text style={styles.text}>Jumlah Gambar: </Text><Text style={{fontFamily: "PlusJakarta"}}>{item.image_count} Gambar</Text>
+              <Text style={styles.text}>Jumlah Gambar: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{item.image_count} Gambar</Text>
             </View>
             <View style={styles.desc}>
-              <Text style={styles.text}>Saiz Program: </Text><Text style={{fontFamily: "PlusJakarta"}}>{calculateFileSize(item.total_size)}</Text>
+              <Text style={styles.text}>Saiz Program: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{calculateFileSize(item.total_size)}</Text>
             </View>
             <View style={styles.desc}>
-              <Text style={styles.text}>Tarikh Album: </Text><Text style={{fontFamily: "PlusJakarta"}}>{dateFormat(item.created_at)}</Text>
+              <Text style={styles.text}>Tarikh Album: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{dateFormat(item.created_at)}</Text>
             </View>
             <View style={styles.desc}>
-              <Text style={styles.text}>Tarikh Kemaskini: </Text><Text style={{fontFamily: "PlusJakarta"}}>{dateFormat(item.updated_at)}</Text>
+              <Text style={styles.text}>Tarikh Kemaskini: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{dateFormat(item.updated_at)}</Text>
             </View>
           </Card>
         )}
       />
 
-      
+
     </>
   );
 }
@@ -171,11 +173,20 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   desc: {
-    flexDirection:'row',
+    flexDirection: 'row',
     flexWrap: 'wrap'
   },
   text: {
     marginBottom: 10,
     fontFamily: "PlusJakartaBold"
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  create: {
+    textAlign: "center",
+    fontFamily: "PlusJakartaBold",
+    marginRight: 6
   }
 });

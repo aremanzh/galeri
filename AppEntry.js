@@ -13,6 +13,7 @@ import AlbumShow from './src/screens/album/show';
 import AlbumCreate from './src/screens/album/create';
 import PhotoUpload from './src/screens/photo/upload';
 import PhotoEdit from './src/screens/photo/edit';
+import AlbumEdit from './src/screens/album/edit';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,40 +27,45 @@ const AppEntry = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      {authenticated ? (<>
-        <Stack.Screen name='Utama' component={HomeIndex} options={{ headerShown: false }} />
-        <Stack.Screen name='Photo.Show' component={PhotoShow} getId={({ params }) => { params.id, params.source, params.data }}
-          options={({ route }) => ({
-            title: route.params.id,
-            headerShown: true,
-            headerBackVisible: true,
-          })} />
-        {/* <Stack.Screen name='Album.Show' component={AlbumShow} /> */}
-        <Stack.Screen name='Album.Show' component={AlbumShow} getId={({ params }) => { params.id, params.photos }}
-          options={({ route }) => ({
-            title: route.params.id,
-            headerShown: true,
-            headerBackVisible: true
-          })} />
-        <Stack.Screen name='Album.Create' component={AlbumCreate} options={({ route }) => ({
+        {authenticated ? (<>
+          <Stack.Screen name='Utama' component={HomeIndex} options={{ headerShown: false }} />
+          <Stack.Screen name='Photo.Show' component={PhotoShow} getId={({ params }) => { params.id, params.source, params.data }}
+            options={({ route }) => ({
+              title: route.params.name,
+              headerShown: true,
+              headerBackVisible: true,
+            })} />
+          {/* <Stack.Screen name='Album.Show' component={AlbumShow} /> */}
+          <Stack.Screen name='Album.Show' component={AlbumShow} getId={({ params }) => { params.id, params.photos }}
+            options={({ route }) => ({
+              title: route.params.photos.name,
+              headerShown: true,
+              headerBackVisible: true
+            })} />
+          <Stack.Screen name='Album.Create' component={AlbumCreate} options={({ route }) => ({
             title: "Tambah Program",
             headerShown: true,
             headerBackVisible: true
           })} />
-        <Stack.Screen name='Photo.Edit' component={PhotoEdit} getId={({ params }) => { params.id }} options={({ route }) => ({
+          <Stack.Screen name='Album.Edit' component={AlbumEdit} getId={({ params }) => { params.id }} options={({ route }) => ({
+            title: `Kemaskini Program: ${route.params.currentName}`,
+            headerShown: true,
+            headerBackVisible: true
+          })} />
+          <Stack.Screen name='Photo.Edit' component={PhotoEdit} getId={({ params }) => { params.id }} options={({ route }) => ({
             title: `Kemaskini Gambar ${route.params.id}`,
             headerShown: true,
             headerBackVisible: true
           })} />
-        <Stack.Screen name='Photo.Upload' component={PhotoUpload} getId={({ params }) => { params.id }} options={({ route }) => ({
-            title: "Tambah Gambar",
+          <Stack.Screen name='Photo.Upload' component={PhotoUpload} getId={({ params }) => { params.id }} options={({ route }) => ({
+            title: `Muat Naik Gambar Program: ${route.params.currentName}`,
             headerShown: true,
             headerBackVisible: true
           })} />
-      </>) : (<>
-        <Stack.Screen name='Signin' component={Signin} options={{ headerShown: false }} />
-        <Stack.Screen name='Signup' component={Signup} options={{ headerShown: false }} />
-      </>)}
+        </>) : (<>
+          <Stack.Screen name='Signin' component={Signin} options={{ headerShown: false }} />
+          <Stack.Screen name='Signup' component={Signup} options={{ headerShown: false }} />
+        </>)}
       </Stack.Navigator>
     </NavigationContainer>
   );

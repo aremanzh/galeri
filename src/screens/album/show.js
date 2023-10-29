@@ -57,7 +57,7 @@ export default function AlbumShow({ route }) {
           let link = document.createElement('a');
           link.download = downloadUrl;
           link.href = downloadUrl;
-      
+
           // Trigger the download by clicking the link
           link.click();
         } else {
@@ -119,13 +119,26 @@ export default function AlbumShow({ route }) {
           >
             {sentenceCase(albumData.name)}
           </Text>
-          <MaterialCommunityIcons
-            name="file-plus"
-            size={25}
-            color="gray"
-            style={{ marginRight: 10 }}
-            onPress={() => navigation.navigate("Photo.Upload", { id: id })}
-          />
+          <View style={styles.row}>
+            <Pressable style={styles.row} onPress={() => navigation.navigate("Album.Edit", { id: id, currentName: albumData.name, currentDesc: albumData.desc })}>
+              <Text style={styles.text}>Kemaskini</Text>
+              <MaterialCommunityIcons
+                name="file-edit"
+                size={25}
+                color="gray"
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+            <Pressable style={styles.row} onPress={() => navigation.navigate("Photo.Upload", { id: id, currentName: albumData.name })}>
+              <Text style={styles.text}>Muat Naik</Text>
+              <MaterialCommunityIcons
+                name="file-plus"
+                size={25}
+                color="gray"
+                style={{ marginRight: 10 }}
+              />
+            </Pressable>
+          </View>
         </View>
       </View>
       {filterResult.length > 0 ? (
@@ -194,4 +207,13 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
   },
+  row: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  text: {
+    textAlign: "center",
+    fontFamily: "PlusJakartaBold",
+    marginRight: 6
+  }
 });
