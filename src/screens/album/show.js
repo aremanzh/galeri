@@ -117,7 +117,7 @@ export default function AlbumShow({ route }) {
               fontSize: 20,
             }}
           >
-            {sentenceCase(albumData.name)}
+            {sentenceCase(albumData.name, 30)}
           </Text>
           <View style={styles.row}>
             <Pressable style={styles.row} onPress={() => navigation.navigate("Album.Edit", { id: id, currentName: albumData.name, currentDesc: albumData.desc })}>

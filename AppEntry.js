@@ -31,14 +31,14 @@ const AppEntry = () => {
           <Stack.Screen name='Utama' component={HomeIndex} options={{ headerShown: false }} />
           <Stack.Screen name='Photo.Show' component={PhotoShow} getId={({ params }) => { params.id, params.source, params.data }}
             options={({ route }) => ({
-              title: route.params.name,
+              title: "Maklumat Gambar",
               headerShown: true,
               headerBackVisible: true,
             })} />
           {/* <Stack.Screen name='Album.Show' component={AlbumShow} /> */}
           <Stack.Screen name='Album.Show' component={AlbumShow} getId={({ params }) => { params.id, params.photos }}
             options={({ route }) => ({
-              title: route.params.photos.name,
+              title: "Maklumat Program",
               headerShown: true,
               headerBackVisible: true
             })} />
@@ -48,17 +48,17 @@ const AppEntry = () => {
             headerBackVisible: true
           })} />
           <Stack.Screen name='Album.Edit' component={AlbumEdit} getId={({ params }) => { params.id }} options={({ route }) => ({
-            title: `Kemaskini Program: ${route.params.currentName}`,
+            title: `Kemaskini Program`,
             headerShown: true,
             headerBackVisible: true
           })} />
           <Stack.Screen name='Photo.Edit' component={PhotoEdit} getId={({ params }) => { params.id }} options={({ route }) => ({
-            title: `Kemaskini Gambar ${route.params.id}`,
+            title: `Kemaskini Gambar`,
             headerShown: true,
             headerBackVisible: true
           })} />
           <Stack.Screen name='Photo.Upload' component={PhotoUpload} getId={({ params }) => { params.id }} options={({ route }) => ({
-            title: `Muat Naik Gambar Program: ${route.params.currentName}`,
+            title: `Muat Naik Gambar`,
             headerShown: true,
             headerBackVisible: true
           })} />
