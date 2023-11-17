@@ -1,4 +1,4 @@
-export default function sentenceCase(str, len) {
+export default function sentenceCase(str, len = 50) {
     if (!str) {
         return ""
     }

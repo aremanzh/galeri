@@ -13,16 +13,22 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { api } from "../../config/api";
 import axios from "axios";
 import sentenceCase from '../../helpers/sentenceCase.js'
+import { FAB } from '@rneui/themed';
+import { Dialog } from '@rneui/themed';
 
 // const Stack = createNativeStackNavigator();
 
 export default function AlbumShow({ route }) {
   const navigation = useNavigation();
   const [keyword, setKeyword] = useState("");
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const albumData = route.params.photos;
   const album = route.params.album;
   const id = route.params.id;
+
+  console.log(id);
 
   const updateSearch = (search) => {
     setKeyword(search);
@@ -70,6 +76,30 @@ export default function AlbumShow({ route }) {
         // Handle any network or server errors here.
         console.error('Network error:', error);
       });
+  }
+
+  const handleConfirm = () => {
+    setDeleteDialogVisible(!deleteDialogVisible);
+  }
+
+  const onDelete = async () => {
+    setLoading(true)
+    try {
+      const { data } = await axios.post(`programs/${id}/archive`, { id: id });
+
+      console.log(data);
+      if (data.errors) {
+        console.log(data.errors);
+        setLoading(false);
+        return;
+      } else {
+        navigation.navigate("Utama", { screen: "Home" })
+        setLoading(false);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false)
+    }
   }
 
   return (
@@ -176,8 +206,36 @@ export default function AlbumShow({ route }) {
               </>
             )}
           />
-          <Button title="Muat turun" onPress={() => handleDownload()} />
-          <Button title="Hapuskan" color={"error"} onPress={() => alert("Hapuskan")} />
+          <FAB
+            visible={true}
+            type="solid"
+            icon={{ name: 'delete', color: 'white' }}
+            placement="right"
+            color="red"
+            style={{marginBottom: 20, zIndex:10}}
+            onPress={handleConfirm}
+          />
+          <Dialog
+            isVisible={deleteDialogVisible}
+            onBackdropPress={handleConfirm}
+          >
+            <Dialog.Title title="Anda pasti mahu hapuskan program ini?"/>
+            <Text>Program yang dihapus tidak dapat dikembalikan</Text>
+            <Dialog.Actions>
+              <Dialog.Button color="secondary" title="Batal" onPress={() => console.log("Anda telah membatalkan tindakan penghapusan program")}/>
+              <Dialog.Button color="warning" title="Hapus" onPress={() => onDelete()}/>
+            </Dialog.Actions>
+          </Dialog>
+          <FAB
+            visible={true}
+            icon={{ name: 'download', color: 'white' }}
+            placement="right"
+            color="blue"
+            style={{marginBottom: 80, zIndex:10}}
+            onPress={handleDownload}
+          />
+          {/* <Button title="Muat turun" onPress={() => handleDownload()} /> */}
+          {/* <Button title="Hapuskan" color={"error"} onPress={() => alert("Hapuskan")} /> */}
         </>
       ) : (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

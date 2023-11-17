@@ -140,7 +140,7 @@ export default function AlbumList({ loading, programs }) {
             )}
             <Card.Divider />
             <View style={styles.desc}>
-              <Text style={styles.text}>Info Program: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{sentenceCase(item.desc)}</Text>
+              <Text style={styles.text}>Info Program: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{sentenceCase(item.desc, 50)}</Text>
             </View>
             <View style={styles.desc}>
               <Text style={styles.text}>Jumlah Gambar: </Text><Text style={{ fontFamily: "PlusJakarta" }}>{item.image_count} Gambar</Text>

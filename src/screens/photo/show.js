@@ -149,7 +149,7 @@ export default function PhotoShow({ route }) {
         {/* <Text style={styles.text}>
           Album: {album.name || photoData.program.name}
         </Text> */}
-        <Text style={styles.text}>Deskripsi: {sentenceCase(photoData.info)}</Text>
+        <Text style={styles.text}>Deskripsi: {sentenceCase(photoData.info, 40)}</Text>
         <Text style={styles.text}>Saiz: {calculateFileSize(photoData.size)}</Text>
         <Text style={styles.text}>Tarikh: {dateFormat(photoData.created_at)}</Text>
         <Text style={styles.text}>Tarikh Kemaskini: {dateFormat(photoData.updated_at)}</Text>
