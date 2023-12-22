@@ -11,8 +11,8 @@ export default function Signin({ navigation }) {
 
   const [auth, setAuth] = useContext(AuthContext);
 
-  const [id, setID] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, setID] = useState("961218035621");
+  const [password, setPassword] = useState("035621");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {

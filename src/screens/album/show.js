@@ -208,12 +208,12 @@ export default function AlbumShow({ route }) {
           />
           <FAB
             visible={true}
-            type="solid"
-            icon={{ name: 'delete', color: 'white' }}
+            icon={<MaterialCommunityIcons name="delete" size={20} color="white"/>}
             placement="right"
             color="red"
             style={{marginBottom: 20, zIndex:10}}
             onPress={handleConfirm}
+            // title="Padam"
           />
           <Dialog
             isVisible={deleteDialogVisible}
@@ -222,20 +222,21 @@ export default function AlbumShow({ route }) {
             <Dialog.Title title="Anda pasti mahu hapuskan program ini?"/>
             <Text>Program yang dihapus tidak dapat dikembalikan</Text>
             <Dialog.Actions>
-              <Dialog.Button color="secondary" title="Batal" onPress={() => console.log("Anda telah membatalkan tindakan penghapusan program")}/>
+              <Dialog.Button color="secondary" title="Batal" onPress={() => handleConfirm()}/>
               <Dialog.Button color="warning" title="Hapus" onPress={() => onDelete()}/>
             </Dialog.Actions>
           </Dialog>
           <FAB
             visible={true}
-            icon={{ name: 'download', color: 'white' }}
+            icon={<MaterialCommunityIcons name="download" size={20} color="white"/>}
             placement="right"
-            color="blue"
+            color="green"
             style={{marginBottom: 80, zIndex:10}}
             onPress={handleDownload}
+            // title="Muat turun"
           />
-          {/* <Button title="Muat turun" onPress={() => handleDownload()} /> */}
-          {/* <Button title="Hapuskan" color={"error"} onPress={() => alert("Hapuskan")} /> */}
+          {/* <Button icon={<MaterialCommunityIcons name="download" size={16} color="white"/>} title="Muat turun" onPress={() => handleDownload()} /> */}
+          {/* <Button title="Hapuskan" color={"error"} onPress={() => handleConfirm} /> */}
         </>
       ) : (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
